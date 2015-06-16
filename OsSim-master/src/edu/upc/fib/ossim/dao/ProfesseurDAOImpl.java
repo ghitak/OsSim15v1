@@ -1,5 +1,7 @@
 package edu.upc.fib.ossim.dao;
 
+import static edu.upc.fib.ossim.dao.DAOUtils.initialisationRequetePreparee;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,43 +18,29 @@ public class ProfesseurDAOImpl implements ProfesseurDAO {
         this.factoryDAO = daoFactory;
 
     }
-	public Professeur chercher(String loginProfesseur, String motDePasseProfesseur)
+	public int getProfesseurId(String loginProfesseur, String motDePasseProfesseur)
 			throws DAOException {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet resultSet = null;
+	    int profId = 0;
 		// Statements allow to issue SQL queries to the database
 		try {
-			Connection mConnection = factoryDAO.getConnection();
-			PreparedStatement preparedStatement = null;
-			ResultSet resultSet = null;
-
-			preparedStatement = mConnection.prepareStatement(
-					DAOUtils.getProperties().getProperty( Constants.REQ_AUTHENTIFICATION_PROFESSEUR));
-			preparedStatement.setString(1, loginProfesseur);
-			preparedStatement.setString(2, motDePasseProfesseur);
+			connexion = factoryDAO.getConnection();
+			
+			preparedStatement = initialisationRequetePreparee( connexion,DAOUtils.getProperties().getProperty(Constants.REQ_AUTHENTIFICATION_PROFESSEUR), false, loginProfesseur,motDePasseProfesseur );
 
 			resultSet = preparedStatement.executeQuery();
-			return writeResultSet(resultSet);
+			if ( resultSet.next() ) {
+				profId= resultSet.getInt("id_professeur");
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return profId;
 	} 
-
-	    private Professeur writeResultSet(ResultSet resultSet) throws SQLException {
-		// ResultSet is initially before the first data set
-	    	Professeur professeur = null;
-		while (resultSet.next()) {
-			String loginProfesseur = resultSet.getString("login");
-			String motDePasseProfesseur = resultSet.getString("password");
-			long idProfesseur = resultSet.getLong("id_Professeur");
-			String nomPrenomProfesseur = resultSet.getString("nomPrenom_Professeur");
-			professeur = new Professeur( loginProfesseur, motDePasseProfesseur, nomPrenomProfesseur);
-			professeur.setIdProdesseur(idProfesseur);
-		}
-		//System.out.println(professeur);
-		return professeur;
-	} 
-
+	  
 
 }

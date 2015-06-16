@@ -28,11 +28,11 @@ public class PanelHistoryEtudiant extends EscapeDialog {
 
 	private JTable historique;     
 	private JScrollPane scrollPane;
-	private long idEtudiant;
+	private int idEtudiant;
 	
 	public PanelHistoryEtudiant(){
-		if(PanelAuthentification.mEtudiant != null)
-		this.idEtudiant = PanelAuthentification.mEtudiant.getIdEtudiant();
+		if(PanelAuthentification.mEtudiant != 0)
+		this.idEtudiant = PanelAuthentification.mEtudiant;
 
 		initSpecifics();
 	}
@@ -75,7 +75,7 @@ public class PanelHistoryEtudiant extends EscapeDialog {
 			data = new Object[listOfTest.size()][columnNames.length];
 			int i = 0;
 			for (TestRealise testRealise : listOfTest) {
-				data[i][0] = testRealise.getIdExerice().getTitreExercice();
+				data[i][0] = testRealise.getTitreExerice();
 				data[i][1] = testRealise.getNote();
 				data[i][2] = testRealise.getDatePassageTest();
 				i++;

@@ -1,8 +1,5 @@
 package edu.upc.fib.ossim.mcq.view;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import javax.swing.JEditorPane;
@@ -50,7 +47,7 @@ public class MCQDisplayExo extends EscapeDialog implements HyperlinkListener{
 				+ "<H1> Tests </H1>"
 				+ tests
 
-				+"<H1><a href=historique> History </a></H1>"
+				+"<H1><a href='historique'> History </a></H1>"
 				+ "</body></html>");
 		
 		editorScrollPane=new JScrollPane(editorPane);
@@ -132,7 +129,16 @@ public void getNext(){
 	public void hyperlinkUpdate(HyperlinkEvent e) {
 		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
 		{
-			
+			if(!e.getDescription().equals("historique") )
+			{
+				if(PanelAuthentification.mProfesseur != 0){
+				
+				//historique professeur : vue pour un test donné
+					int idExercice = Integer.parseInt(e.getDescription());
+				
+						new PanelHistoryProfesseur(idExercice).setVisible(true);						
+					
+				}else{
 				int idExercice = Integer.parseInt(e.getDescription());
 				System.out.println("link"+idExercice);
 				this.factoryDAO = FactoryDAO.getInstance();
@@ -147,49 +153,17 @@ public void getNext(){
 							
 						
 					
-				
-			
-		//affichage de l'historique de l'étudiant loggué			
-			if (e.getDescription().equals("historique")&& PanelAuthentification.mEtudiant != null){
-				
-				new PanelHistoryEtudiant().setVisible(true);	
-			}else if(e.getDescription().contains("test") && PanelAuthentification.mProfesseur != null){
-				
-				//historique professeur : vue pour un test donné
-				String urlToken[] = e.getDescription().split("/");
-				if(urlToken.length > 1){
-					int  idTest = Integer.parseInt(urlToken[1]);
-					new PanelHistoryProfesseur(idTest).setVisible(true);
-					
-				}
+			}
 			}
 			
-			
-
-//			name = JOptionPane.showInputDialog(null,
-//					"Enter Your Name:",
-//					"", JOptionPane.QUESTION_MESSAGE);
-//			if (name != null && !name.equals("")){
-			
+		//affichage de l'historique de l'étudiant loggué			
+			if (e.getDescription().equals("historique")&& PanelAuthentification.mEtudiant != 0){
 				
-				System.out.println("id="+e.getDescription()); // id de l'exo
-
-//				if (url != null) {
-//					if (url.toString().endsWith("xml")) {  // Load simulation
-//						parseXML(url);
-//						try {
-//							System.out.println("First Load: "+paths.get(0));
-//							System.out.println("link Load: "+(new File(paths.get(0)).toURI().toURL()));
-//							//loadSimulation((new File(paths.get(0)).toURI().toURL()));
-//							loadSimulation(new URL(paths.get(0)));
-//						} catch (MalformedURLException e1) {
-//							// TODO Auto-generated catch block
-//							e1.printStackTrace();
-//						}
-//					}
-//				}
+				new PanelHistoryEtudiant().setVisible(true);	
 			
+			}
 		}
+				
 	}
 
 	public int getQuestionNumber() {

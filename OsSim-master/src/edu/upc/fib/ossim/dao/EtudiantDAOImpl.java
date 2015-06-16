@@ -107,30 +107,28 @@ public class EtudiantDAOImpl implements EtudiantDAO{
     } 
 
     
-    public Etudiant chercher(String login, String motDePasseEtudiant)
+    public int getIdEtudiant(String login, String motDePasseEtudiant)
     		throws DAOException {
-
-    	
+    	Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet resultSet = null;
+	    int etudiantId = 0;
     	// Statements allow to issue SQL queries to the database
     	try {
     		
-    		Connection mConnection = factoryDAO.getConnection();
-    		PreparedStatement preparedStatement = null;
-    		ResultSet resultSet = null;
-
-    		preparedStatement = mConnection .prepareStatement(
-    				DAOUtils.getProperties().getProperty( Constants.REQ_AUTHENTIFICATION_ETUDIANT));
-    		preparedStatement.setString(1, login);
-    		preparedStatement.setString(2, motDePasseEtudiant);
+    		connexion = factoryDAO.getConnection();
+    		preparedStatement = initialisationRequetePreparee( connexion,DAOUtils.getProperties().getProperty(Constants.REQ_AUTHENTIFICATION_ETUDIANT), false, login,motDePasseEtudiant );
 
     		resultSet = preparedStatement.executeQuery();
-    		return writeResultSet(resultSet);
+    		if(resultSet.next()){
+    		etudiantId= resultSet.getInt("id_etudiant");
+    		}
 
     	} catch (Exception e) {
     		// TODO Auto-generated catch block
     		e.printStackTrace();
     	}
-    	return null;
+    	return etudiantId;
     } 
         private Etudiant writeResultSet(ResultSet resultSet) throws SQLException {
     	// ResultSet is initially before the first data set

@@ -4,8 +4,9 @@ import java.util.Date;
 
 public class TestRealise {
 	
-	private Exercice idExerice;
-	private Etudiant idEtudiant;
+	private String titreExerice;
+	private int idEtudiant;
+	private String nom;
 	private String note; // peut être int
 	private Date datePassageTest;
 	
@@ -15,25 +16,25 @@ public class TestRealise {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public TestRealise(Exercice id_Exerice, Etudiant id_Etudiant, String note,
+	public TestRealise(String titreExerice, int id_Etudiant, String note,
 			Date datePassageTest) {
 		super();
-		this.idExerice = id_Exerice;
+		this.titreExerice = titreExerice;
 		this.idEtudiant = id_Etudiant;
 		this.note = note;
 		this.datePassageTest = datePassageTest;
 	}
 	
-	public Exercice getIdExerice() {
-		return idExerice;
+	public String getTitreExerice() {
+		return titreExerice;
 	}
-	public void setIdExerice(Exercice idExerice) {
-		this.idExerice = idExerice;
+	public void setTitreExerice(String titreExerice) {
+		this.titreExerice = titreExerice;
 	}
-	public Etudiant getIdEtudiant() {
+	public int getIdEtudiant() {
 		return idEtudiant;
 	}
-	public void setIdEtudiant(Etudiant idEtudiant) {
+	public void setIdEtudiant(int idEtudiant) {
 		this.idEtudiant = idEtudiant;
 	}
 	public String getNote() {
@@ -47,6 +48,12 @@ public class TestRealise {
 	}
 	public void setDatePassageTest(Date datePassageTest) {
 		this.datePassageTest = datePassageTest;
+	}
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 	
 	

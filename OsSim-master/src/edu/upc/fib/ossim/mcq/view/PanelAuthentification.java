@@ -35,8 +35,8 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 	private JTextField tfLogin = null;
 	private JPasswordField tfPass = null;
 	private JButton btnConnect = null;
-	public static Etudiant mEtudiant = null;
-	public static Professeur mProfesseur = null;
+	public static int mEtudiant = 0;
+	public static int mProfesseur = 0;
 	private static String catEtudiant =  "Etudiant";
 	private static String catProfesseur =  "Professeur";
 	private Module module;
@@ -80,7 +80,7 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 	@Override
 	public void setVisible(boolean b) {
 
-		if ((mEtudiant != null)||(mProfesseur != null)){
+		if ((mEtudiant != 0)||(mProfesseur != 0)){
 			super.setVisible(false);
 			if (module == Module.mcq) 
 				//MCQSession.getInstance().getMCQChooserDialog().setVisible(true);
@@ -123,9 +123,9 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 			if(slected.compareTo(catEtudiant) == 0){
 
 				EtudiantDAO mEtudiantDAO = mFactoryDAO.getEtudiantDao();
-				mEtudiant= mEtudiantDAO.chercher(login, pass);
+				mEtudiant= mEtudiantDAO.getIdEtudiant(login, pass);
 
-				if(mEtudiant != null){
+				if(mEtudiant != 0){
 
 					this.dispose();
 					if (module == Module.mcq)
@@ -137,8 +137,8 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 					JOptionPane.showMessageDialog(this, "Connection Fail: Login or password incorrect !!!", "Connection Failed", JOptionPane.ERROR_MESSAGE);
 			}else{
 				ProfesseurDAO mProfesseurDAO = mFactoryDAO.getProfesseurDAO();
-				mProfesseur = mProfesseurDAO.chercher(login, pass);
-				if(mProfesseur != null){
+				mProfesseur = mProfesseurDAO.getProfesseurId(login, pass);
+				if(mProfesseur != 0){
 					this.dispose();
 					if (module == Module.mcq)
 						//MCQSession.getInstance().getMCQChooserDialog().setVisible(true);
