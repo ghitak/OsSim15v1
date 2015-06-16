@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process_scheduler>
+  <params>
+    <object management="FCFS">
+      <multiprogramming>true</multiprogramming>
+      <preemptive>false</preemptive>
+      <quantum>1</quantum>
+      <var>true</var>
+      <verrou>0</verrou>
+    </object>
+  </params>
+  <ready_queue />
+  <arriving_queue>
+    <object pid="8">
+      <name>P9</name>
+      <prio>1</prio>
+      <submission>1</submission>
+      <periodic>false</periodic>
+      <bursts>0 1 0 0 0 0 0</bursts>
+      <color>-3279641</color>
+      <variables>0 0 1 1 2 2 0</variables>
+      <resources>0 0 0 0 0 0 0</resources>
+    </object>
+    <object pid="7">
+      <name>P1</name>
+      <prio>2</prio>
+      <submission>2</submission>
+      <periodic>false</periodic>
+      <bursts>0 1 0</bursts>
+      <color>-5791769</color>
+      <variables>2 0 1</variables>
+      <resources>0 0 0</resources>
+    </object>
+    <object pid="10">
+      <name>P5</name>
+      <prio>1</prio>
+      <submission>9</submission>
+      <periodic>false</periodic>
+      <bursts>0 1 1 0 0</bursts>
+      <color>-3558228</color>
+      <variables>1 0 0 1 2</variables>
+      <resources>0 0 0 0 0</resources>
+    </object>
+    <object pid="9">
+      <name>P2</name>
+      <prio>2</prio>
+      <submission>3</submission>
+      <periodic>false</periodic>
+      <bursts>0 0 0</bursts>
+      <color>-5590829</color>
+      <variables>0 1 2</variables>
+      <resources>0 0 0</resources>
+    </object>
+  </arriving_queue>
+</process_scheduler>
+
