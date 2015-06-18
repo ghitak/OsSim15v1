@@ -7,13 +7,13 @@ public class SimulationMemoire extends Simulation {
 	private int memorySize;
 	private int soSize;
 	private int pageSize;
-	private String policy;
+	private int policy;
 	private List<ProcessusSimulationMemoire> ListeProcessus;
 	
 	
 	
 	public SimulationMemoire(int memorySize, int soSize, int pageSize,
-			String policy) {
+			int policy) {
 		super();
 		this.memorySize = memorySize;
 		this.soSize = soSize;
@@ -42,11 +42,11 @@ public class SimulationMemoire extends Simulation {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-	public String getPolicy() {
+	public int getPolicy() {
 		return policy;
 	}
-	public void setPolicy(String policy) {
-		this.policy = policy;
+	public void setPolicy(int i) {
+		this.policy = i;
 	}
 	public List<ProcessusSimulationMemoire> getListeProcessus() {
 		return ListeProcessus;

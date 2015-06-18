@@ -7,10 +7,12 @@ package edu.upc.fib.ossim.mcq.model;
  *
  */
 public class Bid {
-	
+	private int pid;
+	private int idQR;
 	private int num_Bid;
 	private int size_Bid;
 	private boolean load;
+	
 	
 	
 	public Bid() {
@@ -42,6 +44,18 @@ public class Bid {
 	}
 	public void setLoad(boolean load) {
 		this.load = load;
+	}
+	public int getIdQR() {
+		return idQR;
+	}
+	public void setIdQR(int idQR) {
+		this.idQR = idQR;
+	}
+	public int getPid() {
+		return pid;
+	}
+	public void setPid(int pid) {
+		this.pid = pid;
 	}
 	
 	

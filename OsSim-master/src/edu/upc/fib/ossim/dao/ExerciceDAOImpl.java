@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.upc.fib.ossim.mcq.model.Bid;
 import edu.upc.fib.ossim.mcq.model.Exercice;
 import edu.upc.fib.ossim.mcq.model.QR;
 import edu.upc.fib.ossim.utils.Constants;
@@ -50,9 +51,33 @@ public class ExerciceDAOImpl implements ExerciceDAO{
 	}
 	
 
-	public void creerExercice(Exercice Exo) {
-		// TODO Auto-generated method stub
-		
+	public void creerExerciceInfo(Exercice exo) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet valeursAutoGenerees = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_EXERCICE_INFO), true, exo.getTitreExercice(), exo.getTypeExercice(),exo.isActif() );
+	        int statut = preparedStatement.executeUpdate();
+	        /* Analyse du statut retourné par la requête d'insertion */
+	        if ( statut == 0 ) {
+	            throw new DAOException( "Échec de la création de l'exercice, aucune ligne ajoutée dans la table." );
+	        }
+	        /* Récupération de l'id auto-généré par la requête d'insertion */
+	        valeursAutoGenerees = preparedStatement.getGeneratedKeys();
+	        if ( valeursAutoGenerees.next() ) {
+	            /* Puis initialisation de la propriété id du bean Utilisateur avec sa valeur */
+	        	exo.setIdExercice(valeursAutoGenerees.getInt( 1 ) );
+	        } else {
+	            throw new DAOException( "Échec de la création de l'exercice en base, aucun ID auto-généré retourné." );
+	        }
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
+	    } 
+
 	}
 
 	public List<Exercice> getListExercicePublies() {
@@ -115,6 +140,56 @@ public class ExerciceDAOImpl implements ExerciceDAO{
 		 System.out.println(exercice.toString());
 		 return exercice;
 	 }
+
+	public void creerQrExercice(Exercice exo) {
+		Connection connexion = null;
+	    PreparedStatement ps = null;
+	    ResultSet resultSet = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        ps = connexion.prepareStatement(DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_QR_EXERCICE));
+	        final int batchSize = 1000;
+	        int count = 0;
+	         
+	        for (QR qr: exo.getListeQR()) {
+	         
+	        	ps.setInt(1, exo.getIdExercice());
+	        	ps.setInt(2, qr.getIdQR());
+	            ps.addBatch();
+	             
+	            if(++count % batchSize == 0) {
+	                ps.executeBatch();
+	            }
+	        }
+	        int[] statut = ps.executeBatch();
+	        /* Analyse du statut retourné par la requête d'insertion */
+	        if ( statut == null ) {
+	            throw new DAOException( "Échec de la création des qrsexo, aucune ligne ajoutée dans la table." );
+	        }
+	        
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( resultSet, ps, connexion );
+	    }
+		
+		
+	}
+
+	public void creerExercice(Exercice exo) {
+		
+		creerExerciceInfo(exo);
+		QrDAO qrDao=null;
+		for(int i=0;i<exo.getListeQR().size();i++)
+		{
+			qrDao=new QrDAOImpl(factoryDAO);
+			qrDao.creerQR(exo.getListeQR().get(i));
+		}
+		creerQrExercice(exo);
+		
+		
+	}
 }
 
 

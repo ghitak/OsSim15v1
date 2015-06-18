@@ -10,6 +10,7 @@ package edu.upc.fib.ossim.mcq.model;
  */
 public class ProcessusSimulationProcessus {
 	
+	private int idQR;
 	private int pid;
 	private String name;
 	private int submission;
@@ -113,6 +114,20 @@ public class ProcessusSimulationProcessus {
 
 	public void setPrio(int prio) {
 		this.prio = prio;
+	}
+
+
+
+
+	public int getIdQR() {
+		return idQR;
+	}
+
+
+
+
+	public void setIdQR(int idQR) {
+		this.idQR = idQR;
 	}
 	
 	

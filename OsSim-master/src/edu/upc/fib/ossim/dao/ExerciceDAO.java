@@ -5,10 +5,12 @@ import java.util.List;
 import edu.upc.fib.ossim.mcq.model.Exercice;
 import edu.upc.fib.ossim.mcq.model.QR;
 
-public interface ExerciceDAO {// ghita
+public interface ExerciceDAO {
 	
 	List<QR> getListQRByExo(int IdExo);
-	void creerExercice(Exercice Exo);	 
+	void creerExerciceInfo(Exercice exo);
+	void creerQrExercice(Exercice exo);
+	void creerExercice(Exercice exo);
 	List<Exercice> getListExercicePublies(); 
 	List<Exercice> getListTestPublies(); 
 
