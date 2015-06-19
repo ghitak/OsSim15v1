@@ -186,10 +186,34 @@ public class ExerciceDAOImpl implements ExerciceDAO{
 			qrDao=new QrDAOImpl(factoryDAO);
 			qrDao.creerQR(exo.getListeQR().get(i));
 		}
-		creerQrExercice(exo);
-		
-		
+		creerQrExercice(exo);	
 	}
+	
+	public List<Exercice> getAllExercice() 
+			throws DAOException {
+	    	Connection connexion = null;
+		    PreparedStatement preparedStatement = null;
+		    ResultSet resultSet = null;
+		    List<Exercice> listOfExercice = new ArrayList<Exercice>();
+	    	// Statements allow to issue SQL queries to the database
+	    	try {
+	    		
+	    		connexion = factoryDAO.getConnection();
+	    		preparedStatement = initialisationRequetePreparee( connexion,DAOUtils.getProperties().getProperty(Constants.REQ_LIST_EXERCISES),false);
+
+	    		resultSet = preparedStatement.executeQuery();
+	    		
+	    		while (resultSet.next()) {
+	    			listOfExercice.add(mapExercice(resultSet));
+	    			}
+
+	    		} catch ( SQLException e ) {
+	    			throw new DAOException( e );
+	    		} finally {
+	    			fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    		}
+	    		return listOfExercice;
+	    	}
 }
 
 

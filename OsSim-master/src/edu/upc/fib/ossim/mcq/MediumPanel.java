@@ -94,7 +94,7 @@ public class MediumPanel extends EscapeDialog implements ActionListener{
 		sortComponents();
 
 		this.pack();
-		this.setVisible(true);
+		
 		this.setResizable(false);
 		//TODO check this function behavior in an applet environment
 		this.setLocationRelativeTo((Frame)AppSession.getInstance().getApp());

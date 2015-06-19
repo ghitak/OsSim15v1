@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -42,8 +44,10 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import edu.upc.fib.ossim.AppSession;
+import edu.upc.fib.ossim.dao.ExerciceDAO;
 import edu.upc.fib.ossim.dao.FactoryDAO;
 import edu.upc.fib.ossim.dao.QrDAO;
+import edu.upc.fib.ossim.mcq.model.Exercice;
 import edu.upc.fib.ossim.mcq.model.QR;
 import edu.upc.fib.ossim.utils.EscapeDialog;
 import edu.upc.fib.ossim.utils.Functions;
@@ -96,6 +100,7 @@ public class MCQQuestionLinker extends EscapeDialog {
 	private JButton add = null;
 	private JButton remove = null;
 	private JButton browse = null;
+	private JButton modify = null;
 	private static MCQQuestionLinker instance = null;
 	private Hashtable<String, URL> mcqHashTable = new Hashtable<String, URL>();
 	private Hashtable<String, URL> existingHashTable = new Hashtable<String, URL>();
@@ -109,7 +114,7 @@ public class MCQQuestionLinker extends EscapeDialog {
 	private JPanel browsePanel ;
 	private JPanel activebdPanel;
 	private JPanel pathPanel;
-    //private JComboBox choosequestion; 
+    private JComboBox<Exercice> choosequestion; 
 	static Boolean isEditing = false;
 	URL edited = null;
 
@@ -154,6 +159,8 @@ public class MCQQuestionLinker extends EscapeDialog {
 		@SuppressWarnings("unchecked")
 
 		public void actionPerformed(ActionEvent e) {
+			if(existingTableModel.getDataVector().size() ==0 || existingTable.getSelectedRow() < 0)
+				return;
 			String s = (String) existingTableModel.getValueAt(
 					existingTable.getSelectedRow(), 0);
 			Object o = existingTableModel.getDataVector().remove(
@@ -186,8 +193,8 @@ public class MCQQuestionLinker extends EscapeDialog {
 				browsePanel.setVisible(!source .isSelected());
 			if(pathPanel != null)
 				pathPanel.setVisible(!source .isSelected());
-			/*if(choosequestion != null)
-				choosequestion.setVisible(source .isSelected());*/
+			if(choosequestion != null)
+				choosequestion.setVisible(source .isSelected());
 			while(existingTableModel.getRowCount() > 0)
 				existingTableModel.removeRow(0);
 			while(mcqTableModel.getRowCount() > 0)
@@ -319,6 +326,7 @@ public class MCQQuestionLinker extends EscapeDialog {
 		});
 
 		up = new JButton("Up");
+		modify = new JButton("Modify");
 		up.setFont(up.getFont().deriveFont(18.0f));
 		up.addActionListener(new moveUpListener());
 		down = new JButton("Down");
@@ -329,6 +337,7 @@ public class MCQQuestionLinker extends EscapeDialog {
 		add.addActionListener(new addListener());
 		remove = new JButton("<");
 		remove.setFont(down.getFont().deriveFont(18.0f));
+		modify.setFont(down.getFont().deriveFont(18.0f));
 		remove.addActionListener(new removeListener());
 
 		JPanel buttonPanel = new JPanel();
@@ -340,18 +349,22 @@ public class MCQQuestionLinker extends EscapeDialog {
 		buttonPanel.add(up);
 		buttonPanel.add(new JLabel(" "));
 		buttonPanel.add(down);
+		buttonPanel.add(new JLabel(" "));
+		buttonPanel.add(modify);
 
 		JPanel topPanel = new JPanel();
-		/*choosequestion = new JComboBox ();
-		choosequestion.addItem("select all questions");
+		choosequestion = new JComboBox<Exercice> ();
+		choosequestion.addItemListener(new ExerciceItemListener());
+		initComboBox();
+		
 		choosequestion.setVisible(false);
 		choosequestion.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		choosequestion.setSize(40, 10);*/ 
+		choosequestion.setSize(40, 10);
 
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
 		pathPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pathPanel.add(LPATH);
-		//topPanel.add(choosequestion);
+		topPanel.add(choosequestion);
 
 
 		jcbDatabase = new JCheckBox("DataBase");
@@ -409,6 +422,17 @@ public class MCQQuestionLinker extends EscapeDialog {
 		add(centerPanel);
 		add(savePanel, BorderLayout.SOUTH);
 		setVisible(true);
+	}
+	
+	public void initComboBox(){
+		ExerciceDAO mExerciceDAO = FactoryDAO.getInstance().getExerciceDAO();
+		List<Exercice> listOfExo =  mExerciceDAO.getAllExercice();
+		Exercice all = new Exercice();
+		all.setTitreExercice("select all questions");
+		choosequestion.addItem(all);
+		for (Exercice exercice : listOfExo) {
+			choosequestion.addItem(exercice);
+		}
 	}
 
 	public void initComponents() {
@@ -554,6 +578,42 @@ public class MCQQuestionLinker extends EscapeDialog {
 			isEditing = false;
 			instance.setVisible(true);
 		}
+	}
+	
+	private class ExerciceItemListener implements ItemListener{
+
+		public void itemStateChanged(ItemEvent mItemEvent) {
+			System.out.println(((Exercice)mItemEvent.getItem()).getIdExercice() +" "+mItemEvent.getStateChange()+" "+mItemEvent.SELECTED);
+			int id = ((Exercice)mItemEvent.getItem()).getIdExercice();
+			
+			QrDAO mQrDAO = FactoryDAO.getInstance().getQrDAO();
+			List<QR> listOfQR = null;
+			if(id != 0)
+				listOfQR = mQrDAO.getAllQrFromExercice(id);
+			else if(jcbDatabase!= null && jcbDatabase.isSelected())
+				listOfQR = mQrDAO.getAllQr();
+				
+			if(listOfQR == null)
+				return;
+			
+			while(existingTableModel.getRowCount() > 0)
+				existingTableModel.removeRow(0);
+			while(mcqTableModel.getRowCount() > 0)
+				mcqTableModel.removeRow(0);
+			
+			existingBdHashTable.clear();
+			mcqBdHashTable.clear();
+			
+			for (QR qr : listOfQR) {
+				Object[] o = { qr.getTitleQr(), qr.getDifficulty() };
+				existingTableModel.addRow(o);
+				existingBdHashTable.put( qr.getTitleQr(), qr);
+			}
+		}
+		
+		
+		
+		
 	}
 
 }

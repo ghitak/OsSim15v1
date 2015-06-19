@@ -18,6 +18,7 @@ public class Constants {
 	public static final String REQ_INIT_MDP_ETUDIANT = "init.mdp.etudiant";
 	public static final String REQ_ETUDIANT_BY_ID = "get.etudiant.by.id";
 	public static final String REQ_QR_BY_EXERCICE = "list.qr.by.exercice";
+	public static final String REQ_LIST_TITRE_QR_BY_EXERCICE = "list.titre.qr.by.exercice";
 	public static final String REQ_ANSWERS_BY_QR = "list.answers.by.qr";
 	public static final String REQ_INFO_QR = "get.info.qr.by.id"; 
 	public static final String REQ_INFO_QR_PROCESSUS = "get.param.qr.processus.by.qr";
@@ -28,6 +29,7 @@ public class Constants {
 	public static final String REQ_BID_BY_PID = "list.bid.by.pid";
 	public static final String REQ_EXERCICE_PUBLIE = "list.exo.publie";
 	public static final String REQ_TEST_PUBLIE = "list.tests.publie";
+	public static final String REQ_LIST_EXERCISES = "list.exercises";
 	public static final String REQ_LIST_QUESTION = "list.question";
 	public static final String REQ_INSERT_INFO_QR = "insert.info.qr";
 	public static final String REQ_INSERT_SIMULATION_PROCESS_PARAM= "insert.param.sim.process";

@@ -92,7 +92,7 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 			else if (module == Module.mcqc && slected.compareTo(catEtudiant) != 0 ){
 				MCQSession.destroyInstance();
 				MCQSession.getInstance();
-				MCQSession.getInstance().getMediumPanel();
+				MCQSession.getInstance().getMediumPanel().setVisible(true);
 			}
 			else if( slected.compareTo(catEtudiant) == 0  && module == Module.mcqc)
 				JOptionPane.showMessageDialog(this, "like Student, you don't have access to this module !!!", "Access Denied", JOptionPane.ERROR_MESSAGE);
@@ -160,7 +160,7 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 						//OSSimFrame mainFrame = new OSSimFrame(); 
 						MCQSession.destroyInstance();
 						MCQSession.getInstance();
-						MCQSession.getInstance().getMediumPanel();
+						MCQSession.getInstance().getMediumPanel().setVisible(true);
 					}
 
 				}else

@@ -13,5 +13,6 @@ public interface ExerciceDAO {
 	void creerExercice(Exercice exo);
 	List<Exercice> getListExercicePublies(); 
 	List<Exercice> getListTestPublies(); 
+	List<Exercice> getAllExercice(); 
 
 }

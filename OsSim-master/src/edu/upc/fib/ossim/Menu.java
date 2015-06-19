@@ -472,7 +472,7 @@ public class Menu extends JMenuBar implements ActionListener, Observer {
 				//	else  MCQSession.getInstance().getAuthPanel(Module.mcqc).setVisible(false);
 				/*MCQSession.destroyInstance();
 				MCQSession.getInstance();*/
-				//MCQSession.getInstance().getMediumPanel();
+				//MCQSession.getInstance().getMediumPanel().setVisible(true);
 				break;
 			case 52 : // Disk MCQ
 				MCQSession.getInstance().hideMediumPanel();
