@@ -179,6 +179,27 @@ public class Functions {
 		AppSession.getInstance().getPresenter().repaintPainters(); // Repaint painters 
 	}
 
+	/**
+	 * Opens a simulation from bd
+	 * 
+	 * @param file			xml file
+	 * @throws SoSimException	xml validation or format error 
+	 */
+	public void openSimulationBD(QR qr) throws SoSimException {
+		
+		if (qr.getModuleQR()==Constants.MODULE_PROCESS){
+			AppSession.getInstance().getApp().setMCQSize();
+			AppSession.getInstance().setPresenter(new ProcessMCQCreatorPresenter(false));}
+		
+		if (qr.getModuleQR()==Constants.MODULE_MEMOIRE){
+			AppSession.getInstance().getApp().setMCQSize();
+			AppSession.getInstance().setPresenter(new MemoryMCQCreatorPresenter(false));}
+				
+		AppSession.getInstance().getPresenter().loadBD(qr);	// Load qr from bd
+		AppSession.getInstance().getPresenter().updateInfo(); // Update table info
+		AppSession.getInstance().getPresenter().repaintPainters(); // Repaint painters 
+	}
+
 	public void openMCQSimulation(URL file) throws SoSimException{
 		XMLParserJDOM parser = new XMLParserJDOM(file);
 		String sroot = parser.getRoot();
