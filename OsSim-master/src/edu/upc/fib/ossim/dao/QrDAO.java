@@ -7,7 +7,6 @@ import edu.upc.fib.ossim.mcq.model.Bid;
 import edu.upc.fib.ossim.mcq.model.ProcessusSimulationMemoire;
 import edu.upc.fib.ossim.mcq.model.ProcessusSimulationProcessus;
 import edu.upc.fib.ossim.mcq.model.QR;
-import edu.upc.fib.ossim.mcq.model.Simulation;
 import edu.upc.fib.ossim.mcq.model.SimulationMemoire;
 import edu.upc.fib.ossim.mcq.model.SimulationProcessus;
 
@@ -16,7 +15,9 @@ public interface QrDAO {
 	  List<Answer>getAnswersQR(int IdQR);
 	  List<Bid> getBidByProc(int id_Proc);
 	  List<ProcessusSimulationMemoire> getProcQRMem(int idQR);
+
 	  List<QR> getAllQr();
+
 	  List<ProcessusSimulationProcessus> getProcQRProcArriving(int idQR);
 	  List<ProcessusSimulationProcessus> getProcQRProcReady(int idQR);
 	  SimulationProcessus getParamQRProc(int idQR);
@@ -31,8 +32,9 @@ public interface QrDAO {
 	  
 	  QR findQR(int idQR);
 	  void creerQR(QR q);
-	  
+  
 	  public List<QR> getAllQrFromExercice(int idExercice);
+
 
 }
 

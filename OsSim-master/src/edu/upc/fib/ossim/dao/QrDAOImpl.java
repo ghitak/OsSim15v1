@@ -12,14 +12,11 @@ import java.util.List;
 
 import edu.upc.fib.ossim.mcq.model.Answer;
 import edu.upc.fib.ossim.mcq.model.Bid;
-import edu.upc.fib.ossim.mcq.model.Etudiant;
-import edu.upc.fib.ossim.mcq.model.Exercice;
 import edu.upc.fib.ossim.mcq.model.ProcessusSimulationMemoire;
 import edu.upc.fib.ossim.mcq.model.ProcessusSimulationProcessus;
 import edu.upc.fib.ossim.mcq.model.QR;
 import edu.upc.fib.ossim.mcq.model.SimulationMemoire;
 import edu.upc.fib.ossim.mcq.model.SimulationProcessus;
-import edu.upc.fib.ossim.mcq.model.TestRealise;
 import edu.upc.fib.ossim.utils.Constants;
 
 public class QrDAOImpl implements QrDAO {
@@ -290,6 +287,7 @@ public class QrDAOImpl implements QrDAO {
 		qr.setAnswerType(resultSet.getInt("answerType"));		
 		return qr;
 	}
+
 	public void creerReponseQr(List<Answer> listAns) {
 		Connection connexion = null;
 	    PreparedStatement ps = null;

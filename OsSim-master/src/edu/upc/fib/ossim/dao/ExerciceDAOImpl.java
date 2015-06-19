@@ -1,4 +1,5 @@
 
+
 package edu.upc.fib.ossim.dao;
 
 import static edu.upc.fib.ossim.dao.DAOUtils.fermeturesSilencieuses;
@@ -11,7 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.upc.fib.ossim.mcq.model.Bid;
 import edu.upc.fib.ossim.mcq.model.Exercice;
 import edu.upc.fib.ossim.mcq.model.QR;
 import edu.upc.fib.ossim.utils.Constants;
@@ -215,6 +215,3 @@ public class ExerciceDAOImpl implements ExerciceDAO{
 	    		return listOfExercice;
 	    	}
 }
-
-
-
