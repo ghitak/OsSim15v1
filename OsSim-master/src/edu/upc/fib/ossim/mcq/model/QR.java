@@ -122,6 +122,7 @@ public class QR {
 	private int idQR;
 	private int moduleQR; // Module de la question/réponse (mémoire ou processus)
 	private int blockOnStep;
+	private String titleQr;
 	private String enonce;
 	private boolean includeAnswers;
 	private int difficulty;
@@ -137,7 +138,7 @@ public class QR {
 		// TODO Auto-generated constructor stub
 	}
 
-	public QR(int moduleQR, int blockOnStep, String enonce,
+	public QR(int moduleQR, String titleQr,int blockOnStep, String enonce,
 			boolean includeAnswers, int difficulty, int answerType,
 			int answerNumber, Simulation simulation, List<Answer> answerList) {
 		super();
@@ -150,10 +151,25 @@ public class QR {
 		this.answerNumber = answerNumber;
 		this.simulation = simulation;
 		this.answerList = answerList;
+		this.titleQr = titleQr;
 	}
 
 
 	
+	/**
+	 * @return the titleQr
+	 */
+	public String getTitleQr() {
+		return titleQr;
+	}
+
+	/**
+	 * @param titleQr the titleQr to set
+	 */
+	public void setTitleQr(String titleQr) {
+		this.titleQr = titleQr;
+	}
+
 	public int getIdQR() {
 		return idQR;
 	}

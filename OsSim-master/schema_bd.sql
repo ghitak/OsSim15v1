@@ -34,6 +34,7 @@ CREATE TABLE saksaka.`exercice` (
 CREATE TABLE saksaka.`question_reponse` (
   `id_qr` int NOT NULL AUTO_INCREMENT,
   `Mod_QR` int NOT NULL,
+   `title_QR` VARCHAR(15) NOT NULL,
   `blockOnStep` int NOT NULL,
   `Question` VARCHAR(200),
   `includeAnswers` boolean default false,

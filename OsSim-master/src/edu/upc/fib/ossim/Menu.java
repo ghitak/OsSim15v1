@@ -471,8 +471,8 @@ public class Menu extends JMenuBar implements ActionListener, Observer {
 				MCQSession.getInstance().getAuthPanel(Module.mcqc).setVisible(true);
 				//	else  MCQSession.getInstance().getAuthPanel(Module.mcqc).setVisible(false);
 				/*MCQSession.destroyInstance();
-				MCQSession.getInstance();
-				MCQSession.getInstance().getMediumPanel();*/
+				MCQSession.getInstance();*/
+				//MCQSession.getInstance().getMediumPanel();
 				break;
 			case 52 : // Disk MCQ
 				MCQSession.getInstance().hideMediumPanel();
@@ -504,9 +504,6 @@ public class Menu extends JMenuBar implements ActionListener, Observer {
 				AppSession.getInstance().setPresenter(new ProcessMCQCreatorPresenter(true));
 
 				break;	
-
-
-
 			case 56 :
 
 				//MCQSession.getInstance().getMCQChooserDialog().setVisible(true);
@@ -515,10 +512,7 @@ public class Menu extends JMenuBar implements ActionListener, Observer {
 				//new PanelHistoryProfesseur().setVisible(true);
 				MCQSession.getInstance().getAuthPanel(Module.mcq).setVisible(true);
 				//System.out.println("tototoooooo");
-
-
 				break;
-
 			case 57:
 
 				MCQQuestionLinker.destroyInstance();

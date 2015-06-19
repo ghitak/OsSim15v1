@@ -3,13 +3,20 @@
  */
 package edu.upc.fib.ossim.mcq.view;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.dao.FactoryDAO;
@@ -38,16 +45,26 @@ public class PanelHistoryEtudiant extends EscapeDialog {
 	}
 
 	public void initSpecifics() {
-		this.setTitle("Historique");
+		this.setTitle("Student History");
 
 		scrollPane = new JScrollPane();
 		HistoriqueTableModel mHistoriqueTableModel = new HistoriqueTableModel(idEtudiant);
-		historique = new JTable(mHistoriqueTableModel);
+		historique = new JTable(mHistoriqueTableModel){
+			@Override
+			public TableCellRenderer getCellRenderer(int row, int column) {
+				// TODO Auto-generated method stub
+				return new  HeaderRenderer(historique);
+			}
+		};
 		historique.setRowHeight(30);
-		historique.getTableHeader().setPreferredSize(new Dimension(5, 50));
-
+		
+		scrollPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		
+		JTableHeader header = historique.getTableHeader();
+		
+		header.setDefaultRenderer(new HeaderRenderer(historique));
 		scrollPane.setSize(300, 300);
-		scrollPane.setBackground(Color.BLACK);
+		
 		scrollPane.setViewportView(historique);
 		add(scrollPane);
 
@@ -63,7 +80,7 @@ public class PanelHistoryEtudiant extends EscapeDialog {
 	private class HistoriqueTableModel extends  AbstractTableModel{
 
 		private String[] columnNames = new String[] {
-				"Titre Test", "Note","Date De Passage"
+				"Test Title", "Mark","Date"
 		};
 
 		TestRealiseDAO mTestRealiseDAO;
@@ -79,38 +96,63 @@ public class PanelHistoryEtudiant extends EscapeDialog {
 				data[i][1] = testRealise.getNote();
 				data[i][2] = testRealise.getDatePassageTest();
 				i++;
-			}
-			
-
-			
-		}
-		
+			}	
+		}	
 		public int getColumnCount() {
 	        return columnNames.length;
 	    }
-
 	    public int getRowCount() {
 	        return data.length;
 	    }
-
 	    public String getColumnName(int col) {
 	        return columnNames[col];
-	    }
-	    
+	    }    
 	    public boolean isCellEditable(int row, int col) {
 	      
-	            return false;
-	       
+	            return false;       
 	    }
-
 	    public Object getValueAt(int row, int col) {
 	        return data[row][col];
 	    }
-
+	}	
+	
+	public static class HeaderRenderer implements TableCellRenderer {
 
 	    
+	    private JLabel l = new JLabel();
 
+	    public HeaderRenderer(JTable table) {
+	       
+	        table.getTableHeader().setPreferredSize(new Dimension(5, 40));
+	        l.setOpaque(true);
+	    }
+
+		public Component getTableCellRendererComponent(JTable table,
+				Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
+			
+			System.out.println(value+" "+row+" "+column);
+			
+			if (row==-1 ){
+				l.setFont(new Font("SansSerif",Font.BOLD,13));
+				l.setBackground(Color.GRAY);
+				l.setForeground(Color.WHITE);
+				
+			}
+			else{
+				l.setFont(new Font("SansSerif",Font.PLAIN,11));
+				if(row%2 ==0)
+					l.setBackground(Color.WHITE);
+				else
+					l.setBackground(Color.LIGHT_GRAY);
+			}
+
+			l.setToolTipText(value.toString());
+			l.setHorizontalAlignment(JLabel.CENTER);
+			l.setVerticalAlignment(JLabel.CENTER);
+			l.setText(value.toString());
+			
+			return l;
+		}
 	}
-
-
 }

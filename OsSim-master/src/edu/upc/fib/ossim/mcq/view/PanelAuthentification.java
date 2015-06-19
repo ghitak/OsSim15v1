@@ -17,6 +17,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import edu.upc.fib.ossim.AppSession;
+import edu.upc.fib.ossim.Home;
+import edu.upc.fib.ossim.Menu;
+import edu.upc.fib.ossim.OSSimFrame;
 import edu.upc.fib.ossim.dao.EtudiantDAO;
 import edu.upc.fib.ossim.dao.FactoryDAO;
 import edu.upc.fib.ossim.dao.ProfesseurDAO;
@@ -33,6 +36,7 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 	private JLabel lblLogin = null;
 	private JLabel lblpass = null;
 	private JTextField tfLogin = null;
+	private static PanelAuthentification instance = null;
 	private JPasswordField tfPass = null;
 	private JButton btnConnect = null;
 	public static int mEtudiant = 0;
@@ -120,6 +124,7 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 			slected = (String) catList.getModel().getSelectedItem();
 			String login = tfLogin.getText();
 			String pass = tfPass.getText();
+			Menu menu = null;
 			if(slected.compareTo(catEtudiant) == 0){
 
 				EtudiantDAO mEtudiantDAO = mFactoryDAO.getEtudiantDao();
@@ -128,29 +133,38 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 				if(mEtudiant != 0){
 
 					this.dispose();
-					if (module == Module.mcq)
+					if (module == Module.mcq){
 						//MCQSession.getInstance().getMCQChooserDialog().setVisible(true);
+						JOptionPane.showMessageDialog(instance, "Connection successful!", "connexion", JOptionPane.INFORMATION_MESSAGE);
+						//mainfraime.dispose();
+						//OSSimFrame mainFrame = new OSSimFrame();  
 						MCQSession.getInstance().getMCQDisplayExo().setVisible(true);
+					}
 					else 
 						JOptionPane.showMessageDialog(this, "like Student, you don't have access to this module !!!", "Access Denied", JOptionPane.ERROR_MESSAGE);
 				}else
-					JOptionPane.showMessageDialog(this, "Connection Fail: Login or password incorrect !!!", "Connection Failed", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Connection Fail: Login, password or status incorrect !!!", "Connection Failed", JOptionPane.ERROR_MESSAGE);
 			}else{
 				ProfesseurDAO mProfesseurDAO = mFactoryDAO.getProfesseurDAO();
 				mProfesseur = mProfesseurDAO.getProfesseurId(login, pass);
 				if(mProfesseur != 0){
 					this.dispose();
-					if (module == Module.mcq)
+					if (module == Module.mcq){
 						//MCQSession.getInstance().getMCQChooserDialog().setVisible(true);
+						JOptionPane.showMessageDialog(instance, "Connection successful!", "connexion", JOptionPane.INFORMATION_MESSAGE);
+						//OSSimFrame mainFrame = new OSSimFrame(); 
 						MCQSession.getInstance().getMCQDisplayExo().setVisible(true);
+					}
 					if (module == Module.mcqc){
+						JOptionPane.showMessageDialog(instance, "Connection successful!", "connexion", JOptionPane.INFORMATION_MESSAGE);
+						//OSSimFrame mainFrame = new OSSimFrame(); 
 						MCQSession.destroyInstance();
 						MCQSession.getInstance();
 						MCQSession.getInstance().getMediumPanel();
 					}
 
 				}else
-					JOptionPane.showMessageDialog(this, "Connection Fail: Login or password incorrect !!!", "Connection Failed", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Connection Fail: Login, password or status incorrect !!!", "Connection Failed", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 

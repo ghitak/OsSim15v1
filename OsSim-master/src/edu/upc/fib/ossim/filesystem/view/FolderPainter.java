@@ -3,6 +3,7 @@ package edu.upc.fib.ossim.filesystem.view;
 import java.awt.Dimension;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -68,6 +69,7 @@ public class FolderPainter extends PainterTemplate {
 		
 		modeltaula = new AppTableModel(null, header, false); // Not editable
 		table = new JTable(modeltaula);
+		//table.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().addListSelectionListener(presenter);
 		this.removeMouseListener(presenter);
@@ -76,6 +78,7 @@ public class FolderPainter extends PainterTemplate {
 		JScrollPane scroll = new JScrollPane(table);
 		table.setFillsViewportHeight(false);
 		scroll.setLayout(new ScrollPaneLayout());
+		scroll.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		scroll.setPreferredSize(new Dimension(FileSystemPresenter.FOLDER_WIDTH,FileSystemPresenter.FOLDER_HEIGHT-20));
 		layout.putConstraint(SpringLayout.WEST, scroll, 0, SpringLayout.WEST, lfolder);
 		layout.putConstraint(SpringLayout.NORTH, scroll, 5, SpringLayout.SOUTH, lfolder);

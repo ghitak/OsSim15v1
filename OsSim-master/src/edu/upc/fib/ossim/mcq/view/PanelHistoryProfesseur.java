@@ -5,18 +5,21 @@ package edu.upc.fib.ossim.mcq.view;
 
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.dao.FactoryDAO;
 import edu.upc.fib.ossim.dao.TestRealiseDAO;
 import edu.upc.fib.ossim.mcq.model.TestRealise;
+import edu.upc.fib.ossim.mcq.view.PanelHistoryEtudiant.HeaderRenderer;
 import edu.upc.fib.ossim.utils.EscapeDialog;
 
 /**
@@ -35,16 +38,25 @@ public class PanelHistoryProfesseur extends EscapeDialog{
 	}
 
 	public void initSpecifics() {
-		this.setTitle("Liste des élèves ayant passé le test");
+		this.setTitle("Test History");
 
 		scrollPane = new JScrollPane();
 		HistoriqueTableModel mHistoriqueTableModel = new HistoriqueTableModel(idTest);// à remplacer ou renvoyer le bon idtest
-		historique = new JTable(mHistoriqueTableModel);
+		historique = new JTable(mHistoriqueTableModel)		{
+			@Override
+			public TableCellRenderer getCellRenderer(int row, int column) {
+				// TODO Auto-generated method stub
+				return new  HeaderRenderer(historique);
+			}
+		};
 		historique.setRowHeight(30);
-		historique.getTableHeader().setPreferredSize(new Dimension(5, 50));
+
+		JTableHeader header = historique.getTableHeader();
+
+		header.setDefaultRenderer(new HeaderRenderer(historique));
 
 		scrollPane.setSize(300, 300);
-		scrollPane.setBackground(Color.BLACK);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		scrollPane.setViewportView(historique);
 		add(scrollPane);
 

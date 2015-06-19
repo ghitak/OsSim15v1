@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class ProcessusSimulationMemoire { 
 	
+	private int idQR;
 	private int pid;
 	private String name;
 	private int size;
@@ -91,13 +92,7 @@ public class ProcessusSimulationMemoire {
 		this.quantum = quantum;
 	}
 
-	public List<Bid> getList_Bid() {
-		return ListBid;
-	}
-
-	public void setList_Bid(List<Bid> list_Bid) {
-		ListBid = list_Bid;
-	}
+	
 
 	public String getQuantumOrders() {
 		return quantumOrders;
@@ -105,6 +100,14 @@ public class ProcessusSimulationMemoire {
 
 	public void setQuantumOrders(String quantumOrders) {
 		this.quantumOrders = quantumOrders;
+	}
+
+	public int getIdQR() {
+		return idQR;
+	}
+
+	public void setIdQR(int idQR) {
+		this.idQR = idQR;
 	}
 	
 	

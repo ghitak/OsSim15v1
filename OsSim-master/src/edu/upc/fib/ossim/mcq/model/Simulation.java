@@ -3,6 +3,7 @@ package edu.upc.fib.ossim.mcq.model;
 
 public class Simulation {
 	
+	private int idQR;
 	private String management; // l'algorithme de la simulation (FIX, VAR, PAG, SEG pour la mémoire) 
 	
 	
@@ -20,6 +21,12 @@ public class Simulation {
 	}
 	public void setManagement(String management) {
 		this.management = management;
+	}
+	public int getIdQR() {
+		return idQR;
+	}
+	public void setIdQR(int idQR) {
+		this.idQR = idQR;
 	}
 	
 	

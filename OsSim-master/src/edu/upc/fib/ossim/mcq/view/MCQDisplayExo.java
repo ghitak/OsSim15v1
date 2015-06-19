@@ -40,15 +40,16 @@ public class MCQDisplayExo extends EscapeDialog implements HyperlinkListener{
 		editorPane = new JEditorPane("text/html",null);
 		editorPane.setEditable(false);
 		editorPane.addHyperlinkListener(this);
-		editorPane.setText("<html>"
+		String str = "<html>"
 				+ "<body>"
 				+ "<H1> Exercices </H1>"
 				+ exercices
 				+ "<H1> Tests </H1>"
-				+ tests
-
-				+"<H1><a href='historique'> History </a></H1>"
-				+ "</body></html>");
+				+ tests;
+		if(PanelAuthentification.mEtudiant != 0)
+			str+="<H1><a href='historique'> History </a></H1>";
+		str+= "</body></html>";
+		editorPane.setText(str);
 		
 		editorScrollPane=new JScrollPane(editorPane);
 		this.add(editorScrollPane);
@@ -147,7 +148,7 @@ public void getNext(){
 				this.setMaxQuestions(listQR.size());
 				
 				
-							System.out.println("First Load: "+listQR.get(0).getIdQR()+"  "+listQR.get(0).getModuleQR());
+						//	System.out.println("First Load: "+listQR.get(0).getIdQR()+"  "+listQR.get(0).getModuleQR());
 //							loadSimulation((new File(paths.get(0)).toURI().toURL()));
 							loadSimulation(listQR.get(0));
 							
@@ -157,7 +158,7 @@ public void getNext(){
 			}
 			
 		//affichage de l'historique de l'étudiant loggué			
-			if (e.getDescription().equals("historique")&& PanelAuthentification.mEtudiant != 0){
+			if (e.getDescription().equals("historique") && PanelAuthentification.mEtudiant != 0){
 				
 				new PanelHistoryEtudiant().setVisible(true);	
 			
