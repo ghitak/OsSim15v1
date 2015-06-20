@@ -55,8 +55,7 @@ public class DiskMCQViewPresenter extends DiskPresenter{
 	}
 	@Override
 	public void putXMLData(int child, Vector<Vector<Vector<String>>> data) throws SoSimException {
-		System.out.println(data);
-		if(child!=2)
+				if(child!=2)
 			super.putXMLData(child, data);
 		else{
 			int blockOnStep = new Integer (data.get(0).get(3).get(1)).intValue();

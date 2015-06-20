@@ -50,7 +50,7 @@ public class DiskMCQCreatorPresenter extends DiskPresenter{
 	
 	@Override
 	public void putXMLData(int child, Vector<Vector<Vector<String>>> data) throws SoSimException {
-		System.out.println(data);
+		
 		if(child!=2)
 			super.putXMLData(child, data);
 		else{
@@ -59,8 +59,6 @@ public class DiskMCQCreatorPresenter extends DiskPresenter{
 			boolean includeAnswers = data.get(0).get(5).get(1).equals("true");
 			String question = data.get(0).get(1).get(1);
 			ArrayList<String> answers = new ArrayList<String>();
-			System.out.println("Question: " + data.get(0).get(1).get(1));
-			System.out.println("AnswerType:" + data.get(0).get(2).get(1));
 			int answerType = Integer.parseInt(data.get(0).get(2).get(1));
 			ArrayList<Boolean> answerbool = new ArrayList<Boolean>();
 			int difficulty = new Integer(data.get(0).get(6).get(1)).intValue();

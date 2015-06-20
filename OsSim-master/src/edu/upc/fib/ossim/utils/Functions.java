@@ -182,7 +182,7 @@ public class Functions {
 	/**
 	 * Opens a simulation from bd
 	 * 
-	 * @param file			xml file
+	 * @param qr			QR to modify
 	 * @throws SoSimException	xml validation or format error 
 	 */
 	public void openSimulationBD(QR qr) throws SoSimException {

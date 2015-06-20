@@ -79,7 +79,6 @@ public class MCQDisplayExo extends EscapeDialog implements HyperlinkListener{
 		this.factoryDAO = FactoryDAO.getInstance();
 
 		List<Exercice> exercices = this.factoryDAO.getExerciceDAO().getListExercicePublies();
-		System.out.println("size exo"+exercices.size());
 		String exo = "<ul>";
 		for (int i = 0; i < exercices.size(); i++) {
 			exo += "<li><a href='"+ exercices.get(i).getIdExercice() + "'>"
@@ -95,7 +94,6 @@ public class MCQDisplayExo extends EscapeDialog implements HyperlinkListener{
 		this.factoryDAO = FactoryDAO.getInstance();
 
 		List<Exercice> tests = this.factoryDAO.getExerciceDAO().getListTestPublies();
-		System.out.println("size test"+tests.size());
 		String test = "<ul>";
 		for (int i = 0; i < tests.size(); i++) {
 			test += "<li><a href='" + tests.get(i).getIdExercice() + "'>"
@@ -109,7 +107,6 @@ public void getNext(){
 		
 		MCQSession.getInstance().destroyMCQViewPanel();
 		questionNumber++;
-		System.out.println("Next:" + listQR.get(questionNumber-1));
 		loadSimulation(listQR.get(questionNumber-1));	
 	}
 	public boolean hasNext(){
@@ -123,7 +120,6 @@ public void getNext(){
 		
 		MCQSession.getInstance().destroyMCQViewPanel();
 		questionNumber--;
-		System.out.println("Previous:" + listQR.get(questionNumber-1));
 		loadSimulation(listQR.get(questionNumber-1));
 
 	}
@@ -141,7 +137,6 @@ public void getNext(){
 					
 				}else{
 				int idExercice = Integer.parseInt(e.getDescription());
-				System.out.println("link"+idExercice);
 				this.factoryDAO = FactoryDAO.getInstance();
 
 				List<QR> listQR = this.factoryDAO.getExerciceDAO().getListQRByExo(idExercice);

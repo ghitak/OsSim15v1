@@ -97,7 +97,6 @@ public class StatePainterVertical extends PainterTemplate {
 		
 		
 //->		Iterator<Integer> it = presenter.iterator(0);
-		//System.out.println("QueuePainter.repaint() ::: in progress !");
 		Iterator<Integer> it = presenter.iterator(1);
 		
 		int psize;

@@ -100,7 +100,6 @@ public class HistoryPainter extends PainterTemplate {
 		int burstWIDTH = 70;
 		int burstMarge = 20;
 		int timeTotal = ((ProcessPresenter) presenter).getTotalTime();
-		//System.out.println("getTotalTime : " + ((ProcessPresenter) presenter).getTotalTime());
 		viewPortheight = process_y + P_HEIGHT + 30 + (timeTotal * (burstWIDTH + burstMarge)/P_MINBURSTS);
 		setPreferredSize(new Dimension(viewPortwidth, viewPortheight));
 		revalidate(); // Updates scroll

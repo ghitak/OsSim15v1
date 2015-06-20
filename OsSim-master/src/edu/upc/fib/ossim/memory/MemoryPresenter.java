@@ -1104,7 +1104,6 @@ public class MemoryPresenter extends Presenter {
 																		// at
 																		// position
 																		// 1
-					System.out.println(block.get(0).get(1)+" action commande");
 					blockData.add(new Integer(block.get(1).get(1))); // size.
 																		// Value
 																		// at
@@ -1167,10 +1166,8 @@ public class MemoryPresenter extends Presenter {
 							components.add(component);
 							
 						}
-						//System.out.println(getXMLData(0).get(0).get(0).get(1));
 						if (((String) (getXMLData(0).get(0).get(0).get(1)))
 								.equals("PAG")) {
-							System.out.println("yes");
 							context.addProgram(programData, components,
 									programData.get(5),
 									(Integer) programData.get(6));

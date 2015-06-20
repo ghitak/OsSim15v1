@@ -930,9 +930,7 @@ public class ContextProcess {
     		} else {
     			
     			checkIO(true);	// Increments IO times.
-    			
-    			//System.out.println("\n==> running .... : " + runningProcess.getPid());
-    			
+    			    			
 //---> vérifier si le programme utilise la fonctionnalité de sémaphore et réagir en conséquence
     			checkSemaphore(time, multiprogram, preemptive, quantum);
     			
@@ -1051,7 +1049,6 @@ public class ContextProcess {
     				continueRunning = false;
     				for(int i=0; i <semaphoreResource.length; i++){
     					if(semaphoreResource[i] == 0) {
-    						System.out.println("semaphoreResource " + i + " is taken by PID : " + runningProcess.getPid());
 							semaphoreResource[i] = runningProcess.getPid();
 							
 							continueRunning = true;							
@@ -1066,7 +1063,6 @@ public class ContextProcess {
 	 					runningProcess = next;
 	 					
 	 					if(runningProcess != null) {
-	 						//System.out.println("\n==> [PASS] running to .... : " + runningProcess.getPid());
 	 						checkSemaphore(time, multiprogram, preemptive, quantum);
 	 					}					
     				}
@@ -1074,7 +1070,6 @@ public class ContextProcess {
     				continueRunning = false;
     				for(int i=0; i <semaphoreResource.length; i++){
     					if(semaphoreResource[i] == runningProcess.getPid()) {
-    						//System.out.println("semaphoreResource " + i + " is released by PID : " + runningProcess.getPid());
 							semaphoreResource[i] = 0;
 							
 							continueRunning = true;

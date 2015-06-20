@@ -100,7 +100,6 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 		setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
 		TitledBorder questionBorder = BorderFactory.createTitledBorder(lquestion);
 		// à remmettre :JLabel nbrquestion = new JLabel("Question : "+ MCQSession.getInstance().getMCQChooserDialog().getQuestionNumber() +" / "+MCQSession.getInstance().getMCQChooserDialog().getMaxQuestions());
-		//System.out.println("Question : "+ MCQSession.getInstance().getMCQDisplayExo().getQuestionNumber() +" / "+String.valueOf(MCQSession.getInstance().getMCQDisplayExo().getMaxQuestions()));
 		JLabel nbrquestion = new JLabel("Question : "+ MCQSession.getInstance().getMCQDisplayExo().getQuestionNumber() +" / "+MCQSession.getInstance().getMCQDisplayExo().getMaxQuestions());
 
 		//JLabel time = new JLabel("Time:");
@@ -108,7 +107,6 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 		infoPanel.add(nbrquestion);
 		//infoPanel.add(time);
 		this.add(infoPanel);
-		System.out.println("creation questionPanel");
 		JPanel questionPanel = new JPanel();
 		questionPanel.setBorder(questionBorder);
 		JScrollPane questionScrollPane = new JScrollPane(question);
@@ -132,7 +130,6 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 			this.add(scrollPane);
 		}
 		else{
-			System.out.println("creation answerpanel");
 			answerPane = new JPanel(new GridLayout(2,1));
 			JScrollPane answerScrollPane = new JScrollPane(answer);
 			answerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -155,7 +152,6 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 					AppSession.getInstance().getMenu().getMenu(it).setEnabled(true);
 				}catch(Exception exc){
 					//WEIRD BUG, Apparantly the code says there are 14 Menus available where in fact only 5 exists
-					//System.out.println(exc.toString());
 				}
 
 			}

@@ -268,6 +268,34 @@ public class MCQQuestionLinker extends EscapeDialog {
 			mcqTable.updateUI();
 		}
 	}
+	private class modifyListener implements ActionListener {
+		@SuppressWarnings("unchecked")
+
+		public void actionPerformed(ActionEvent e) {
+						
+			if(existingTableModel.getDataVector().size() ==0 || existingTable.getSelectedRow() < 0)
+				return;
+			String s = (String) existingTableModel.getValueAt(
+					existingTable.getSelectedRow(), 0);
+			
+			System.out.println("valeur s : "+s);
+			if(jcbDatabase.isSelected()){
+				QR qr =null;
+			
+				try {
+					qr = (QR) existingBdHashTable.get(s);
+					System.out.println("valeur s : "+qr.getIdQR());
+					qr = FactoryDAO.getInstance().getQrDAO().findQR(qr.getIdQR());
+					Functions.getInstance().openSimulationBD(qr);
+				} catch (SoSimException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+			
+		}
+	}
 	private MCQQuestionLinker() {
 		super();
 		setTitle("MCQ Creator Tool");
@@ -338,6 +366,7 @@ public class MCQQuestionLinker extends EscapeDialog {
 		remove = new JButton("<");
 		remove.setFont(down.getFont().deriveFont(18.0f));
 		modify.setFont(down.getFont().deriveFont(18.0f));
+		modify.addActionListener(new modifyListener());
 		remove.addActionListener(new removeListener());
 
 		JPanel buttonPanel = new JPanel();

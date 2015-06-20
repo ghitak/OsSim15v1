@@ -91,7 +91,7 @@ public class ProcessMCQCreatorPresenter extends ProcessPresenter{
 			int answerType =qr.getAnswerNumber();
 			ArrayList<Boolean> answerbool = new ArrayList<Boolean>();
 			int difficulty = qr.getDifficulty();
-			for(int it = 1 ; it <= listAnswers.size(); it++){
+			for(int it = 0 ; it < listAnswers.size(); it++){
 				if(answerType!=3){
 					answers.add(listAnswers.get(it).getText());
 					if(includeAnswers){
@@ -108,6 +108,7 @@ public class ProcessMCQCreatorPresenter extends ProcessPresenter{
 			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty);
 
 		} catch (Exception e) {
+			System.out.println("pb put data processmcq creationpanel :"+e.toString());
 
 		}
 	}
