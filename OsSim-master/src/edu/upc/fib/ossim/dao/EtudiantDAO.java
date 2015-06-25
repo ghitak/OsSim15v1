@@ -1,5 +1,10 @@
 
 package edu.upc.fib.ossim.dao;
+/**
+ * @author saksaka
+ *
+ */
+
 
 import edu.upc.fib.ossim.mcq.model.Etudiant;
 

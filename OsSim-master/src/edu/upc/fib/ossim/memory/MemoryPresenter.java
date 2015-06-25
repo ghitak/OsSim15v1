@@ -3,7 +3,9 @@ package edu.upc.fib.ossim.memory;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -11,7 +13,9 @@ import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 
 import edu.upc.fib.ossim.AppSession;
+import edu.upc.fib.ossim.mcq.model.ProcessusSimulationMemoire;
 import edu.upc.fib.ossim.mcq.model.QR;
+import edu.upc.fib.ossim.mcq.model.SimulationMemoire;
 import edu.upc.fib.ossim.memory.model.ContextMemory;
 import edu.upc.fib.ossim.memory.model.MemStrategyFIXED;
 import edu.upc.fib.ossim.memory.model.MemStrategyPAG;
@@ -1186,8 +1190,91 @@ public class MemoryPresenter extends Presenter {
 	}
 
 	@Override
-	public void putBDData(QR data) throws SoSimException {
-		// TODO Auto-generated method stub
+	public void putBDData(QR qr) throws SoSimException {
+try {
+			
+			SimulationMemoire data= (SimulationMemoire) qr.getSimulation();
+				String actionCommand = data.getManagement();
+				int sMemSize = data.getMemorySize();
+				int sSOSize = data.getSoSize();
+				int sPageSize = data.getPageSize();
+				String policy = data.getPolicy();
+
+				
+				settings.selectAlgorithm(actionCommand);
+				((MemorySettings) settings).selectPolicy(policy);
+				((MemorySettings) settings).setMemSize(sMemSize);
+				((MemorySettings) settings).setSOSize(sSOSize);
+				((MemorySettings) settings).setPageSize(sPageSize);
+
+				context.setMemorySizeParams(sMemSize, sSOSize);
+				context.setPolicy(policy);
+				actionSpecific(actionCommand); // Updates management. Creates OS
+												// block
+
+				
+				for (int i = 0; i < data.getListeProcessus().size(); i++) {
+					ProcessusSimulationMemoire process=data.getListeProcessus().get(i);
+					Vector<Object> processData = new Vector<Object>();
+					
+					processData.add(String.valueOf((process.getPid()))); // pid. Value at position 1
+					processData.add(process.getName()); 			 // name. Value at position 1
+					processData.add(process.getSize()); // prio. Value at position 1
+					processData.add(process.getDuration()); // submission. Value at position 1
+					processData.add(new Color((int) process.getColor())); // color. Value at position 1 (RGB value)
+					processData.add(process.getQuantumOrders());
+					processData.add(process.getQuantum());
+					if(actionCommand.equals("PAG")){
+						Vector<Vector<Object>> components = new Vector<Vector<Object>>();
+						for (int j = 0; j < process.getListBid().size(); j++) {
+							Vector<Object> component = new Vector<Object>();
+							component.add(process.getListBid().get(j).getNum_Bid()); // bid
+							
+							component.add(process.getListBid().get(j).getSize_Bid()); // size
+							component.add(process.getListBid().get(j).isLoad()); // load?
+							components.add(component);
+							
+						}
+						context.addProgram(processData, components,
+								processData.get(5),
+								(Integer) processData.get(6));
+						
+						
+					}else
+						context.addProgram(processData, null);
+				}		
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SoSimException("all_04");
+		}
+	
 		
+	}
+
+	@Override
+	public QR getBDData(QR qr) throws SoSimException {
+		
+		SimulationMemoire data=null;
+		//param
+			data= new SimulationMemoire();
+			data.setManagement(mgnActionCommand);
+			data.setMemorySize(context.getMemorySize());
+			data.setSoSize(context.getSOSize());
+			data.setPageSize(pageSize);
+			data.setPolicy(((MemorySettings) settings).getPolicy());
+			
+			
+		// Memory
+		//	data = context.getXMLDataMemory(); // Except SO block. Creates at
+												// init
+			
+		// Programs
+			List<ProcessusSimulationMemoire> listeProcessus=new ArrayList<ProcessusSimulationMemoire>();
+			listeProcessus.addAll(context.getBDDataPrograms());
+			data.setListeProcessus(listeProcessus);
+			
+			qr.setSimulation(data);
+		return qr;
 	}
 }

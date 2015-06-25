@@ -2,6 +2,7 @@ package edu.upc.fib.ossim.memory.model;
 
 import java.util.Vector;
 
+import edu.upc.fib.ossim.mcq.model.ProcessusSimulationMemoire;
 import edu.upc.fib.ossim.utils.ColorCell;
 
 
@@ -59,6 +60,8 @@ public interface ProcessMemUnit {
 	 * @return cloned object
 	 */
 	public ProcessMemUnit clone();
+
+	public ProcessusSimulationMemoire getBDInfo();
 	
 	
 }

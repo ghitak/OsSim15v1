@@ -10,16 +10,20 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import edu.upc.fib.ossim.mcq.view.MCQDisplayExo;
-import edu.upc.fib.ossim.mcq.view.PanelAuthentification;
-import edu.upc.fib.ossim.mcq.view.PanelAuthentification.Module;
 import edu.upc.fib.ossim.mcq.view.MCQChooserDialog;
 import edu.upc.fib.ossim.mcq.view.MCQCreationPanel;
+import edu.upc.fib.ossim.mcq.view.MCQDisplayExo;
+import edu.upc.fib.ossim.mcq.view.MCQQuestionLinker;
 import edu.upc.fib.ossim.mcq.view.MCQViewPanel;
+import edu.upc.fib.ossim.mcq.view.PanelAuthentification;
+import edu.upc.fib.ossim.mcq.view.PanelAuthentification.Module;
+import edu.upc.fib.ossim.mcq.view.PanelHistoryEtudiant;
+import edu.upc.fib.ossim.mcq.view.PanelHistoryProfesseur;
 
 public class MCQSession {
 
 	private MediumPanel medium = null;
+	private boolean saved=false;
 	private MCQCreationPanel mcqCreationPanel = null;
 	private MCQViewPanel mcqViewPanel = null;
 	private Hashtable<Integer,String> answers = new Hashtable<Integer, String>();
@@ -27,22 +31,40 @@ public class MCQSession {
 	private MCQChooserDialog chooser = null;
 	private MCQDisplayExo chooserDisplayExo = null;
 	private PanelAuthentification authepanel = null;
+	private PanelHistoryEtudiant historyStudentPanel = null;
+	private PanelHistoryProfesseur historyProfesseurpanel = null;
+	private Hashtable<Integer,String> correctAnswers = new Hashtable<Integer, String>();
+	
+	private int result=0;
+
 
 	private MCQSession(){}
-	
+
 	public PanelAuthentification getAuthPanel(Module m){
 		authepanel = new PanelAuthentification(m);
-			return authepanel;
+		return authepanel;
 	}
-	
+
 	public MediumPanel getMediumPanel(){
 		if(medium ==null) medium = new MediumPanel();
-			return medium;
+		return medium;
 	}
+
+	public PanelHistoryEtudiant getHistoryStudentPanel(){
+		if(historyStudentPanel ==null) historyStudentPanel = new PanelHistoryEtudiant();
+		return historyStudentPanel;
+	}
+
+	public PanelHistoryProfesseur getHistoryProfesseurPanel(int id){
+		historyProfesseurpanel = new PanelHistoryProfesseur(id);
+		return historyProfesseurpanel;
+	}
+
 	public void hideMediumPanel(){
 		if(medium!=null) medium.setVisible(false);
 	}
-	
+
+
 	public MCQCreationPanel getmcqCreationPanel(){
 		if(mcqCreationPanel ==null)
 			mcqCreationPanel = new MCQCreationPanel(MCQSession.getInstance().getMediumPanel().getAnswerType(), MCQSession.getInstance().getMediumPanel().getnbrAnswers());
@@ -52,6 +74,7 @@ public class MCQSession {
 		mcqCreationPanel = new MCQCreationPanel(type, nbrAnswers);
 		return mcqCreationPanel;
 	}
+
 	public MCQViewPanel getmcqViewPanel(int nbrQuestion, String question, int answerType,int nbrAnswers, List<String> answers,int blockOnStep,String correctAnswer){
 		mcqViewPanel = new MCQViewPanel(question, answerType, nbrAnswers, answers, blockOnStep,correctAnswer);
 		return mcqViewPanel;
@@ -67,9 +90,9 @@ public class MCQSession {
 
 	public static MCQSession getInstance(){
 		if(instance == null) instance = new MCQSession();
-			return instance;
+		return instance;
 	}
-	
+
 	public static void destroyInstance(){
 		instance = null;
 	}
@@ -77,14 +100,20 @@ public class MCQSession {
 		if(chooser == null)chooser = new MCQChooserDialog(); 
 		return chooser;
 	}
-	
+
 	public MCQDisplayExo getMCQDisplayExo(){
 		if(chooserDisplayExo == null)chooserDisplayExo = new MCQDisplayExo(); 
 		return chooserDisplayExo;
 	}
-	
+
 	public void addAnswer(int nbr, String Answer){
 		answers.put(nbr, Answer);
+	}
+	public String getCorrectAnswer(int nbr){
+		return correctAnswers.get(nbr);
+	}
+	public void addCorrectAnswer(int nbr, String Answer){
+		correctAnswers.put(nbr, Answer);
 	}
 	public String getAnswer(int nbr){
 		return answers.get(nbr);
@@ -103,7 +132,7 @@ public class MCQSession {
 			it++;
 		}
 		XMLOutputter xmlOutput = new XMLOutputter();
-		 
+
 		xmlOutput.setFormat(Format.getPrettyFormat());
 		try {
 			String path = System.getProperty("user.dir");
@@ -112,10 +141,59 @@ public class MCQSession {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 
-		System.out.println("File Saved!");
-		
-		
+
+		System.out.println("File Saved!");	
 	}
+
+	public  void onDisconnect(){	
+		if (medium != null){
+			medium.dispose();
+			medium = null;
+		}
+		/*if (mcqCreationPanel != null)
+			mcqCreationPanel.dispose();
+		if (mcqViewPanel != null)
+			mcqViewPanel.dispose();
+		if(instance != null)
+			instance.dispose();*/
+		if(authepanel!= null){
+			authepanel.dispose();
+			authepanel = null;
+		}
+
+		if (historyProfesseurpanel!= null){
+			historyProfesseurpanel.dispose();
+			historyProfesseurpanel = null;
+		}
+		if(historyStudentPanel!= null){
+			historyStudentPanel.dispose();
+			historyProfesseurpanel = null;
+		}
+		if( chooserDisplayExo != null){
+			chooserDisplayExo.dispose();
+			chooserDisplayExo = null;
+		}
+		MCQQuestionLinker.closeInstance();
+
+
+
+	}
+
+	public int getResult() {
+		return result;
+	}
+
+	public void setResult(int result) {
+		this.result = result;
+	}
+
+	public boolean isSaved() {
+		return saved;
+	}
+
+	public void setSaved(boolean saved) {
+		this.saved = saved;
+	}
+	
 	
 }

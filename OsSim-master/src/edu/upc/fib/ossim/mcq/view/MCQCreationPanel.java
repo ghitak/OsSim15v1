@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -17,14 +19,15 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 
+import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.mcq.model.Answer;
 import edu.upc.fib.ossim.mcq.model.QR;
 import edu.upc.fib.ossim.utils.Functions;
@@ -53,7 +56,11 @@ public class MCQCreationPanel extends JPanel {
 	private JSpinner difficulty = null;
 	private JButton add = null;
 	private JButton remove = null;
-
+	private JCheckBox sauvegarde=null;
+	
+	private JTextField question_title = null;
+	private JLabel lquestion_title = null;
+	
 	public MCQCreationPanel(int type, int nbrAnswers) {
 
 		this.nbrAnswers = nbrAnswers;
@@ -78,8 +85,10 @@ public class MCQCreationPanel extends JPanel {
 				1, // min
 				99, // max
 				1);
+		lquestion_title=new JLabel("Question title");
+		question_title=new JTextField(15);
 		difficulty = new JSpinner(spdiffmodel);
-		question = new JTextArea(6, 20);
+		question = new JTextArea(4, 20);
 		radioGroup = new ArrayList<JCheckBox>();
 		answerGroup = new ArrayList<JTextArea>();
 		buttonGroup = new ButtonGroup();
@@ -92,6 +101,20 @@ public class MCQCreationPanel extends JPanel {
 				buttonGroup.add(radioGroup.get(it));
 		}
 		includeAnswer = new JCheckBox("Include Answer in Generated XML");
+		sauvegarde = new JCheckBox("Save in BD");
+		sauvegarde.addItemListener(new ItemListener() {
+		      
+			public void itemStateChanged(ItemEvent e) {
+				if(sauvegarde.isSelected()){
+					AppSession.isBD=true;
+					System.out.println("yes"+ AppSession.isBD);
+				}else{
+					AppSession.isBD=false;
+					System.out.println("no "+ AppSession.isBD);
+				}
+				
+			}
+		    });
 
 		add = new JButton(Functions.getInstance().createImageIcon("plus.png"));
 		add.addActionListener(new ActionListener() {
@@ -142,6 +165,10 @@ public class MCQCreationPanel extends JPanel {
 				BoxLayout.PAGE_AXIS));
 		questionPanel.setBorder(questionBorder);
 
+		JPanel qrTitlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		qrTitlePanel.add(lquestion_title);
+		qrTitlePanel.add(question_title);
+		
 		JPanel stepPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		stepPanel.add(lblock_on_step);
 		stepPanel.add(block_on_step);
@@ -149,8 +176,13 @@ public class MCQCreationPanel extends JPanel {
 		JPanel difficultyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		difficultyPanel.add(new JLabel("Difficulty"));
 		difficultyPanel.add(difficulty);
+		
+		JPanel sauvegardePanel = new JPanel(new FlowLayout());
+		sauvegardePanel.add(sauvegarde);
+		this.add(sauvegardePanel);
 
-		JPanel panel1 = new JPanel(new GridLayout(2, 1));
+		JPanel panel1 = new JPanel(new GridLayout(3, 1));
+		panel1.add(qrTitlePanel);
 		panel1.add(stepPanel);
 		panel1.add(difficultyPanel);
 
@@ -211,7 +243,8 @@ public class MCQCreationPanel extends JPanel {
 		JPanel includeAnswerPanel = new JPanel(new FlowLayout());
 		includeAnswerPanel.add(includeAnswer);
 		this.add(includeAnswerPanel);
-
+		
+	
 		this.setBorder(BorderFactory.createBevelBorder(1));
 		if (nbrAnswers == 2)
 			remove.setEnabled(false);
@@ -302,6 +335,52 @@ public class MCQCreationPanel extends JPanel {
 		}
 		return data;
 	}
+	
+	public QR getBDData(QR qr) {
+		 		qr.setTitleQr(question_title.getText());
+				System.out.println("getdata "+question_title.getText()+" qr ttt "+qr.getTitleQr());
+				qr.setEnonce(question.getText());
+				qr.setAnswerType(answerType);
+				qr.setBlockOnStep((Integer) block_on_step.getValue());
+				qr.setAnswerNumber(nbrAnswers);
+				if (includeAnswer.isSelected())
+					qr.setIncludeAnswers(true);
+				else 
+					qr.setIncludeAnswers(false);
+				
+				qr.setDifficulty((Integer)difficulty.getValue());
+		
+				
+				// Answers
+				List<Answer> listanswers=new ArrayList<Answer>();
+				for (int it = 0; it < nbrAnswers; it++) {
+					Answer answer=new Answer();
+					
+					if (answerType != 3)
+						answer.setText(answerGroup.get(it).getText());
+					else
+						answer.setText("");
+					if (includeAnswer.isSelected()) {
+						
+						if (answerType != 3) {
+							if (radioGroup.get(it).isSelected())
+							
+							answer.setValue(true);
+							else
+								answer.setValue(false);
+						} else {
+							answer.setText(answerGroup.get(it).getText());
+						}
+				
+					}
+
+					listanswers.add(answer);
+				}
+				qr.setAnswerList(listanswers);
+
+		return qr;
+	}
+	
 	/*
 	 * methode pour charger info QR et la liste des réponses de QR
 	 * @return QR

@@ -1,14 +1,15 @@
 package edu.upc.fib.ossim.dao;
+/**
+ * @author saksaka
+ *
+ */
 
 import static edu.upc.fib.ossim.dao.DAOUtils.initialisationRequetePreparee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import edu.upc.fib.ossim.mcq.model.Etudiant;
-import edu.upc.fib.ossim.mcq.model.Professeur;
 import edu.upc.fib.ossim.utils.Constants;
 
 

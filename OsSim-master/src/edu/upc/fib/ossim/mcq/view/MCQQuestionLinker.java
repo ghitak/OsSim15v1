@@ -16,6 +16,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -95,6 +97,8 @@ public class MCQQuestionLinker extends EscapeDialog {
 	private CustomTableModel mcqTableModel = new CustomTableModel(columnNames,
 			0);
 
+	private JTextField titreExoBd=null;
+	private JLabel ltitreExoBd=null;
 	private JButton up = null;
 	private JButton down = null;
 	private JButton add = null;
@@ -122,9 +126,13 @@ public class MCQQuestionLinker extends EscapeDialog {
 
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			if(!jcbDatabase.isSelected()){
 			OpenSaveDialog dialog = new OpenSaveDialog(instance);
 			saveFile = dialog.showSaveFileChooser();
 			saveQuestionList();
+			}else{
+				saveQuestionListBD();
+			}
 
 		}
 	}
@@ -193,8 +201,11 @@ public class MCQQuestionLinker extends EscapeDialog {
 				browsePanel.setVisible(!source .isSelected());
 			if(pathPanel != null)
 				pathPanel.setVisible(!source .isSelected());
-			if(choosequestion != null)
+			if(choosequestion != null){
 				choosequestion.setVisible(source .isSelected());
+				titreExoBd.setVisible(source .isSelected());
+				ltitreExoBd.setVisible(source .isSelected());
+			}
 			while(existingTableModel.getRowCount() > 0)
 				existingTableModel.removeRow(0);
 			while(mcqTableModel.getRowCount() > 0)
@@ -269,8 +280,6 @@ public class MCQQuestionLinker extends EscapeDialog {
 		}
 	}
 	private class modifyListener implements ActionListener {
-		@SuppressWarnings("unchecked")
-
 		public void actionPerformed(ActionEvent e) {
 						
 			if(existingTableModel.getDataVector().size() ==0 || existingTable.getSelectedRow() < 0)
@@ -368,6 +377,12 @@ public class MCQQuestionLinker extends EscapeDialog {
 		modify.setFont(down.getFont().deriveFont(18.0f));
 		modify.addActionListener(new modifyListener());
 		remove.addActionListener(new removeListener());
+		
+		titreExoBd=new JTextField(15);
+		ltitreExoBd=new JLabel("title");
+		titreExoBd.setToolTipText("exercise title");
+		ltitreExoBd.setVisible(false);
+		titreExoBd.setVisible(false);
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
@@ -394,6 +409,8 @@ public class MCQQuestionLinker extends EscapeDialog {
 		pathPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pathPanel.add(LPATH);
 		topPanel.add(choosequestion);
+		topPanel.add(ltitreExoBd);
+		topPanel.add(titreExoBd);
 
 
 		jcbDatabase = new JCheckBox("DataBase");
@@ -404,6 +421,7 @@ public class MCQQuestionLinker extends EscapeDialog {
 		activebdPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); 
 		browsePanel.add(browse);
 		activebdPanel.add(jcbDatabase);
+		
 
 
 		topPanel.add(pathPanel);
@@ -596,6 +614,37 @@ public class MCQQuestionLinker extends EscapeDialog {
 		}
 		//System.out.println("File Saved!");
 	}
+	
+	private void saveQuestionListBD() {
+		if(existingTableModel.getDataVector().size() ==0 || existingTable.getSelectedRow() < 0)
+			return;
+		
+		Exercice exercice=new Exercice();
+		List<QR> listqr=new ArrayList<QR>();
+		
+		String type = brExercice.isSelected()?"e":"t";
+		exercice.setTypeExercice(type);
+		exercice.setActif(true);
+		exercice.setTitreExercice(titreExoBd.getText());
+		
+		QR qr=null;
+		for(int it = 0; it< mcqTableModel.getRowCount() ; it++){
+			
+			qr = (QR) mcqBdHashTable.get(mcqTableModel.getValueAt(it, 0));
+			listqr.add(qr);
+		}
+		
+		exercice.setListeQR(listqr);
+		ExerciceDAO exDao = FactoryDAO.getInstance().getExerciceDAO();
+		
+		exDao.creerExercice(exercice);
+		
+		JOptionPane.showMessageDialog(null,
+				"Exercise saved in data base",
+				" sauvegarde done ", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
+	
 	public static void destroyInstance() {
 		instance = null;
 	}
@@ -644,5 +693,13 @@ public class MCQQuestionLinker extends EscapeDialog {
 		
 		
 	}
+	public static void closeInstance() {
+		if (instance != null){
+			instance.dispose();
+			instance = null;
+		}
+
+	}
+
 
 }

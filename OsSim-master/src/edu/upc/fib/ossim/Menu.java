@@ -27,15 +27,8 @@ import edu.upc.fib.ossim.mcq.FileSystemMCQCreatorPresenter;
 import edu.upc.fib.ossim.mcq.MCQSession;
 import edu.upc.fib.ossim.mcq.MemoryMCQCreatorPresenter;
 import edu.upc.fib.ossim.mcq.ProcessMCQCreatorPresenter;
-import edu.upc.fib.ossim.mcq.view.MCQCreationPanel;
-import edu.upc.fib.ossim.mcq.view.MCQDisplayExo;
-
-import edu.upc.fib.ossim.mcq.view.PanelAuthentification;
-import edu.upc.fib.ossim.mcq.view.PanelAuthentification.Module;
-
 import edu.upc.fib.ossim.mcq.view.MCQQuestionLinker;
-import edu.upc.fib.ossim.mcq.view.PanelHistoryEtudiant;
-import edu.upc.fib.ossim.mcq.view.PanelHistoryProfesseur;
+import edu.upc.fib.ossim.mcq.view.PanelAuthentification.Module;
 import edu.upc.fib.ossim.memory.MemoryPresenter;
 import edu.upc.fib.ossim.process.ProcessPresenter;
 import edu.upc.fib.ossim.utils.Functions;

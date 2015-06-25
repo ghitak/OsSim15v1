@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -34,7 +33,6 @@ import javax.swing.text.JTextComponent;
 import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.dao.FactoryDAO;
 import edu.upc.fib.ossim.mcq.model.QR;
-import edu.upc.fib.ossim.mcq.model.Simulation;
 import edu.upc.fib.ossim.mcq.view.MCQQuestionLinker;
 import edu.upc.fib.ossim.template.view.FormTemplate;
 import edu.upc.fib.ossim.template.view.PainterTemplate;
@@ -42,14 +40,14 @@ import edu.upc.fib.ossim.template.view.PanelTemplate;
 import edu.upc.fib.ossim.template.view.SettingsTemplate;
 import edu.upc.fib.ossim.utils.Functions;
 import edu.upc.fib.ossim.utils.HelpDialog;
+//->
+import edu.upc.fib.ossim.utils.HistoryDialog;
 import edu.upc.fib.ossim.utils.InfoDialog;
 import edu.upc.fib.ossim.utils.OpenSaveDialog;
 import edu.upc.fib.ossim.utils.SoSimException;
 import edu.upc.fib.ossim.utils.TimerPanel;
 import edu.upc.fib.ossim.utils.Translation;
 import edu.upc.fib.ossim.utils.XMLParserJDOM;
-//->
-import edu.upc.fib.ossim.utils.HistoryDialog;
 
 
 /**
@@ -83,6 +81,7 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 	protected static final int TIMER_VELOCITY = 1000;
 	protected static final int HELP_WIDTH = 600;
 	protected static final int HELP_HEIGHT = 350;
+	
 
 	protected Hashtable<String, PainterTemplate> painters;
 	protected PanelTemplate panel;
@@ -486,24 +485,36 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 						}
 					}
 					break;
-				case 13:	// Save actual simulation file  
-					if(opened!=null){
-						saveXML(opened.toURI().toURL());
-						if(MCQQuestionLinker.isEditing()){
-							AppSession.getInstance().getMenu().home();
-							MCQQuestionLinker.doneEditing();
-							opened = null;
-						}
-
+				case 13:	// Save actual simulation file 
+					if(AppSession.isBD){
+						saveBD();
 						break;
+					}else{
+						if(opened!=null){
+							saveXML(opened.toURI().toURL());
+							if(MCQQuestionLinker.isEditing()){
+								AppSession.getInstance().getMenu().home();
+								MCQQuestionLinker.doneEditing();
+								opened = null;
+							}
+
+							break;
+						}
 					}
+					
 				case 14: // save as
-					open = new OpenSaveDialog(panel);
-					returnFile = open.showSaveFileChooser();
-					if (returnFile != null) {
-						saveXML(returnFile.toURI().toURL());
-					opened = returnFile.toURI().toURL();
+					if(AppSession.isBD){
+						saveBD();
+					}else{
+						open = new OpenSaveDialog(panel);
+						returnFile = open.showSaveFileChooser();
+						if (returnFile != null) {
+							saveXML(returnFile.toURI().toURL());
+						opened = returnFile.toURI().toURL();
+						}
 					}
+					
+					
 					break;
 				}
 				actionSpecific(actionCommand);
@@ -954,20 +965,43 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 	 * @see XMLParserJDOM
 	 * 
 	 */
-	public void saveXML(URL file) throws SoSimException  {
+	public void saveXML(URL file) throws SoSimException {
 		// Creates root
 		XMLParserJDOM parser = new XMLParserJDOM(file, getXMLRoot());
 
-		for (int i = 0; i< getXMLChilds().size(); i++) {
+		for (int i = 0; i < getXMLChilds().size(); i++) {
 			String child = getXMLChilds().get(i);
 			parser.addElement(getXMLRoot(), child, null);
 			parser.addElements(child, getXMLData(i));
 		}
 
-		
-		
 		parser.writeXmlFile();
 	}
+	/**
+	 * Save a simulation into data base
+	 *
+	 * @param 
+	 * 
+	 * @throws SoSimException	exception thrown by parser
+	 * 
+	 * 
+	 * 
+	 */
+	@SuppressWarnings("static-access")
+	public void saveBD() throws SoSimException {
+
+		QR qr = new QR();
+		qr = getBDData(qr);
+
+		this.daoFactory = FactoryDAO.getInstance();
+		this.daoFactory.getQrDAO().creerQR(qr);
+		JOptionPane d = new JOptionPane();
+		d.showMessageDialog(null,
+				"Question saved in data base",
+				" sauvegarde done ", JOptionPane.INFORMATION_MESSAGE);
+
+	}
+
 
 	/**
 	 * Abstract method that may return root element value to manage simulation's xml operations 
@@ -1013,5 +1047,18 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 	 * 
 	 */
 	public abstract void putBDData(QR data) throws SoSimException;
+	
+	/**
+	 * Abstract method that build all model information from a simulation
+	 * @param qr 
+	 * 
+	 * 
+	 * @param data child's data
+	 * @throws SoSimException	exception thrown by parser  
+	 * 
+	 */
+	public abstract QR getBDData(QR qr) throws SoSimException;
+
+
 
 }

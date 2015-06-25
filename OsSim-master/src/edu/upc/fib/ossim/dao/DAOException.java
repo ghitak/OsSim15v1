@@ -1,4 +1,9 @@
 package edu.upc.fib.ossim.dao;
+/**
+ * @author saksaka
+ *
+ */
+
 
 public class DAOException extends RuntimeException {
 	/*

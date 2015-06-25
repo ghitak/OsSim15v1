@@ -71,7 +71,6 @@ public class XMLParserJDOM {
 	 * 
 	 * @throws SoSimException	parent doesn't exist
 	 */
-	@SuppressWarnings("unchecked")
 	public Vector<Vector<Vector<String>>> getElements(String sparent) throws SoSimException {
 		// Return Data elements x attributes x 2  rows --> (name, value) from sparent  
 		Vector<Vector<Vector<String>>> data = new Vector<Vector<Vector<String>>>();
@@ -167,7 +166,6 @@ public class XMLParserJDOM {
 	 * @param name		wanted element identifier
 	 * @return	node identified by name
 	 */
-	@SuppressWarnings("unchecked")
 	private Element findNode(Element current, String name) {
 		if (current == null) return null;
 		if (current.getName().equals(name)) return current;

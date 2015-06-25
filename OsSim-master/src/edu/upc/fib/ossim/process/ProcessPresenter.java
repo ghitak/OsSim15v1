@@ -2,8 +2,10 @@ package edu.upc.fib.ossim.process;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 import java.util.Vector;
 
@@ -16,7 +18,6 @@ import javax.swing.event.ListSelectionEvent;
 
 import edu.upc.fib.ossim.mcq.model.ProcessusSimulationProcessus;
 import edu.upc.fib.ossim.mcq.model.QR;
-import edu.upc.fib.ossim.mcq.model.Simulation;
 import edu.upc.fib.ossim.mcq.model.SimulationProcessus;
 import edu.upc.fib.ossim.process.model.ContextProcess;
 import edu.upc.fib.ossim.process.model.Process;
@@ -703,7 +704,7 @@ public class ProcessPresenter extends Presenter {
 	 * 
 	 * @see  #getXMLChilds()
 	 */
-	public SimulationProcessus getBDData() {
+	public QR getBDData(QR qr) {
 		SimulationProcessus data = null;
 		// Params
 			data = new SimulationProcessus();
@@ -714,11 +715,18 @@ public class ProcessPresenter extends Presenter {
 			data.setVar(((ProcessSettings) settings).getVariablePartagee().isSelected());	
 			data.setVerrou(((ProcessSettings) settings).getverrouSize());
 		// Ready queue
-			data.getListeProcessus().addAll(context.getBDDataReady().getListeProcessus()); 
+			List<ProcessusSimulationProcessus> listprocess=new ArrayList<ProcessusSimulationProcessus>();
+			listprocess.addAll(context.getBDDataReady());
+	
 		// Incoming queue
-			data.getListeProcessus().addAll(context.getBDDataArriving().getListeProcessus());
-		
-		return data;
+			listprocess.addAll(context.getBDDataArriving());
+			data.setListeProcessus(listprocess);
+			
+			qr.setSimulation(data);
+			
+		return qr;
+
+
 	}
 	/**
 	 * Builds all model information from a concrete child identified by <code>child</code>

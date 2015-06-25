@@ -19,17 +19,13 @@ import javax.swing.JTextField;
 import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.Home;
 import edu.upc.fib.ossim.Menu;
-import edu.upc.fib.ossim.OSSimFrame;
 import edu.upc.fib.ossim.dao.EtudiantDAO;
 import edu.upc.fib.ossim.dao.FactoryDAO;
 import edu.upc.fib.ossim.dao.ProfesseurDAO;
 import edu.upc.fib.ossim.mcq.MCQSession;
-import edu.upc.fib.ossim.mcq.model.Etudiant;
-import edu.upc.fib.ossim.mcq.model.Professeur;
 import edu.upc.fib.ossim.utils.EscapeDialog;
 
 public class PanelAuthentification extends EscapeDialog implements ActionListener{
-
 
 	public static  enum Module{mcq, mcqc};
 	FactoryDAO mFactoryDAO;
@@ -69,22 +65,19 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 		catList.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		catList.setSelectedIndex(0);
 
-
 		sortComponents();
-
 		this.pack();
 		this.setVisible(true);
 		this.setResizable(false);
-
 		//TODO check this function behavior in an applet environment
 		this.setLocationRelativeTo((Frame)AppSession.getInstance().getApp());
-
 	}
 
 	@Override
 	public void setVisible(boolean b) {
 
 		if ((mEtudiant != 0)||(mProfesseur != 0)){
+			Home.getButtonDeconnexion().setVisible(true);
 			super.setVisible(false);
 			if (module == Module.mcq) 
 				//MCQSession.getInstance().getMCQChooserDialog().setVisible(true);
@@ -113,7 +106,6 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 		typePanel.add(lblpass);		
 		typePanel.add(tfPass);
 		typePanel.add(catList);
-
 		typePanel.add(btnConnect);
 
 		add(typePanel);
@@ -131,13 +123,11 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 				mEtudiant= mEtudiantDAO.getIdEtudiant(login, pass);
 
 				if(mEtudiant != 0){
-
+					Home.getButtonDeconnexion().setVisible(true);
 					this.dispose();
 					if (module == Module.mcq){
 						//MCQSession.getInstance().getMCQChooserDialog().setVisible(true);
 						JOptionPane.showMessageDialog(instance, "Connection successful!", "connexion", JOptionPane.INFORMATION_MESSAGE);
-						//mainfraime.dispose();
-						//OSSimFrame mainFrame = new OSSimFrame();  
 						MCQSession.getInstance().getMCQDisplayExo().setVisible(true);
 					}
 					else 
@@ -148,27 +138,22 @@ public class PanelAuthentification extends EscapeDialog implements ActionListene
 				ProfesseurDAO mProfesseurDAO = mFactoryDAO.getProfesseurDAO();
 				mProfesseur = mProfesseurDAO.getProfesseurId(login, pass);
 				if(mProfesseur != 0){
+					Home.getButtonDeconnexion().setVisible(true);
 					this.dispose();
 					if (module == Module.mcq){
-						//MCQSession.getInstance().getMCQChooserDialog().setVisible(true);
-						JOptionPane.showMessageDialog(instance, "Connection successful!", "connexion", JOptionPane.INFORMATION_MESSAGE);
-						//OSSimFrame mainFrame = new OSSimFrame(); 
-						MCQSession.getInstance().getMCQDisplayExo().setVisible(true);
+						JOptionPane.showMessageDialog(instance, "Connection successful!", "connexion", JOptionPane.INFORMATION_MESSAGE); 
+						MCQSession.getInstance().getMCQDisplayExo().setVisible(true);			
 					}
 					if (module == Module.mcqc){
-						JOptionPane.showMessageDialog(instance, "Connection successful!", "connexion", JOptionPane.INFORMATION_MESSAGE);
-						//OSSimFrame mainFrame = new OSSimFrame(); 
+						JOptionPane.showMessageDialog(instance, "Connection successful!", "connexion", JOptionPane.INFORMATION_MESSAGE); 
 						MCQSession.destroyInstance();
 						MCQSession.getInstance();
 						MCQSession.getInstance().getMediumPanel().setVisible(true);
 					}
-
 				}else
 					JOptionPane.showMessageDialog(this, "Connection Fail: Login, password or status incorrect !!!", "Connection Failed", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-
-
 	}
 
 

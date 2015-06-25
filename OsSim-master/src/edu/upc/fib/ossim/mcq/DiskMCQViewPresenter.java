@@ -7,7 +7,6 @@ import java.util.Vector;
 import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.disk.DiskPresenter;
 import edu.upc.fib.ossim.mcq.view.PanelMCQViewDisk;
-import edu.upc.fib.ossim.mcq.view.PanelMCQViewProcess;
 import edu.upc.fib.ossim.template.view.PanelTemplate;
 import edu.upc.fib.ossim.utils.Functions;
 import edu.upc.fib.ossim.utils.SoSimException;

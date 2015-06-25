@@ -28,6 +28,23 @@ public class MCQDisplayExo extends EscapeDialog implements HyperlinkListener{
 	private int questionNumber = 1;
 	private int maxQuestions =  0;
 	private List<QR> listQR;
+	private int idTest = 0;
+	private String typeExo=null;
+	public String getTypeExo() {
+		return typeExo;
+	}
+
+	public void setTypeExo(String typeExo) {
+		this.typeExo = typeExo;
+	}
+
+	public List<QR> getListQR() {
+		return listQR;
+	}
+
+	public void setListQR(List<QR> listQR) {
+		this.listQR = listQR;
+	}
 
 	private FactoryDAO factoryDAO; 
 	ExerciceDAO exerciceDAO;
@@ -81,7 +98,7 @@ public class MCQDisplayExo extends EscapeDialog implements HyperlinkListener{
 		List<Exercice> exercices = this.factoryDAO.getExerciceDAO().getListExercicePublies();
 		String exo = "<ul>";
 		for (int i = 0; i < exercices.size(); i++) {
-			exo += "<li><a href='"+ exercices.get(i).getIdExercice() + "'>"
+			exo += "<li><a href='exo/"+ exercices.get(i).getIdExercice() + "'>"
 					+ exercices.get(i).getTitreExercice() + "</a></li>";
 		}
 		exo += "</ul>";
@@ -96,7 +113,7 @@ public class MCQDisplayExo extends EscapeDialog implements HyperlinkListener{
 		List<Exercice> tests = this.factoryDAO.getExerciceDAO().getListTestPublies();
 		String test = "<ul>";
 		for (int i = 0; i < tests.size(); i++) {
-			test += "<li><a href='" + tests.get(i).getIdExercice() + "'>"
+			test += "<li><a href='test/" + tests.get(i).getIdExercice() + "'>"
 					+ tests.get(i).getTitreExercice() + "</a></li>";
 		}
 		test+= "</ul>";
@@ -128,24 +145,31 @@ public void getNext(){
 		{
 			if(!e.getDescription().equals("historique") )
 			{
-				if(PanelAuthentification.mProfesseur != 0){
+				String[] qt =e.getDescription().split("/");
+				if(PanelAuthentification.mProfesseur != 0 && qt[0].equals("test")){
 				
+					
 				//historique professeur : vue pour un test donné
-					int idExercice = Integer.parseInt(e.getDescription());
+					this.idTest = Integer.parseInt(qt[1]);
+					this.typeExo="exercice";
 				
-						new PanelHistoryProfesseur(idExercice).setVisible(true);						
+					MCQSession.getInstance().getHistoryProfesseurPanel(idTest).setVisible(true);					
 					
 				}else{
-				int idExercice = Integer.parseInt(e.getDescription());
+					this.idTest = Integer.parseInt(qt[1]);
+					this.typeExo="test";
+					
 				this.factoryDAO = FactoryDAO.getInstance();
 
-				List<QR> listQR = this.factoryDAO.getExerciceDAO().getListQRByExo(idExercice);
+				listQR = this.factoryDAO.getExerciceDAO().getListQRByExo(idTest);
+				if(listQR != null){
 				this.setMaxQuestions(listQR.size());
 				
 				
 						//	System.out.println("First Load: "+listQR.get(0).getIdQR()+"  "+listQR.get(0).getModuleQR());
 //							loadSimulation((new File(paths.get(0)).toURI().toURL()));
 							loadSimulation(listQR.get(0));
+				}
 							
 						
 					
@@ -155,7 +179,7 @@ public void getNext(){
 		//affichage de l'historique de l'étudiant loggué			
 			if (e.getDescription().equals("historique") && PanelAuthentification.mEtudiant != 0){
 				
-				new PanelHistoryEtudiant().setVisible(true);	
+				MCQSession.getInstance().getHistoryStudentPanel().setVisible(true);	
 			
 			}
 		}
@@ -178,6 +202,14 @@ public void getNext(){
 
 	public void setMaxQuestions(int maxQuestions) {
 		this.maxQuestions = maxQuestions;
+	}
+
+	public int getIdTest() {
+		return idTest;
+	}
+
+	public void setIdTest(int idTest) {
+		this.idTest = idTest;
 	}
 
 }

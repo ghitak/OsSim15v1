@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import edu.upc.fib.ossim.memory.MemoryPresenter;
-import edu.upc.fib.ossim.memory.model.ProcessMemUnit;
 import edu.upc.fib.ossim.template.Presenter;
 import edu.upc.fib.ossim.template.view.PainterTemplate;
 import edu.upc.fib.ossim.utils.Functions;

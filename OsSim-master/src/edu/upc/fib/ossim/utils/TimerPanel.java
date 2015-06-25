@@ -2,12 +2,11 @@ package edu.upc.fib.ossim.utils;
 
 import java.awt.Dimension;
 
-import javax.swing.Timer;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.Timer;
 
 import edu.upc.fib.ossim.template.Presenter;
 

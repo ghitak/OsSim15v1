@@ -4,7 +4,6 @@ import java.util.Locale;
 import java.util.Observable;
 import java.util.Properties;
 
-import edu.upc.fib.ossim.mcq.MCQSession;
 import edu.upc.fib.ossim.template.Presenter;
 import edu.upc.fib.ossim.utils.ObservableIdioma;
 
@@ -30,6 +29,7 @@ public class AppSession {
 	public static final int port = 9900; //port used to block the application from having multiple instances
 	private Menu menu;
 	
+	public static boolean isBD=false;
 	
 	private AppSession() { 
 		idioma = new Locale("en");

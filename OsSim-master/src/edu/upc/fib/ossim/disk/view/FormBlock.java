@@ -1,6 +1,7 @@
 package edu.upc.fib.ossim.disk.view;
 import java.awt.Color;
 import java.util.Vector;
+
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;

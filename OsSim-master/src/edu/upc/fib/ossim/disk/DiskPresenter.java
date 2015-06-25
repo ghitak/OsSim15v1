@@ -518,4 +518,10 @@ public class DiskPresenter extends Presenter {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public QR getBDData(QR qr) throws SoSimException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

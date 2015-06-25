@@ -1,7 +1,6 @@
 package edu.upc.fib.ossim;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,10 +9,11 @@ import java.util.Observer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
-import edu.upc.fib.ossim.mcq.view.MCQDisplayExo;
+import edu.upc.fib.ossim.mcq.MCQSession;
 import edu.upc.fib.ossim.mcq.view.PanelAuthentification;
 import edu.upc.fib.ossim.utils.Functions;
 import edu.upc.fib.ossim.utils.Translation;
@@ -38,7 +38,7 @@ public class Home extends JPanel implements Observer {
 	private JButton qcm_creator;
 	//QCM response
 	private JButton qcm_loader;
-	private JButton deconnexion;
+	private static JButton deconnexion;
 	private Menu menu;
 	
 	/**
@@ -68,8 +68,14 @@ public class Home extends JPanel implements Observer {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				
-				PanelAuthentification.mEtudiant = 0;
-				PanelAuthentification.mProfesseur = 0;
+				int res = JOptionPane.showConfirmDialog(Home.this, "Confirmation Deconnexion", "Are you sure ?", JOptionPane.OK_CANCEL_OPTION);
+				if(res == JOptionPane.OK_OPTION){
+					PanelAuthentification.mEtudiant = 0;
+					PanelAuthentification.mProfesseur = 0;
+					deconnexion.setVisible(false);
+					MCQSession.getInstance().onDisconnect();
+				}
+
 			
 				
 			}
@@ -112,11 +118,15 @@ public class Home extends JPanel implements Observer {
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, grid, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, grid, 0, SpringLayout.VERTICAL_CENTER, this);
 		layout.putConstraint(SpringLayout.WEST, griddeconnexion, 0, SpringLayout.EAST, grid);
-		if (PanelAuthentification.mEtudiant != 0 || PanelAuthentification.mProfesseur != 0){
-			add(griddeconnexion);
-		}
+		add(griddeconnexion);
+		deconnexion.setVisible(false);
 		add(grid);
+
 	}
+	public static JButton getButtonDeconnexion(){
+		return deconnexion;
+	}
+
 
 	/**
 	 * Translate home components
@@ -129,6 +139,7 @@ public class Home extends JPanel implements Observer {
 		memory.setToolTipText(Translation.getInstance().getLabel("all_54"));
 		fileSystem.setToolTipText(Translation.getInstance().getLabel("all_58"));
 		disk.setToolTipText(Translation.getInstance().getLabel("all_57"));
+		
 	}
 	
 	/**

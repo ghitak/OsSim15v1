@@ -1,4 +1,8 @@
 package edu.upc.fib.ossim.dao;
+/**
+ * @author saksaka
+ *
+ */
 
 
 import static edu.upc.fib.ossim.dao.DAOUtils.fermeturesSilencieuses;
@@ -9,14 +13,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
-import edu.upc.fib.ossim.mcq.model.Etudiant;
-import edu.upc.fib.ossim.mcq.model.Exercice;
-import edu.upc.fib.ossim.mcq.model.QR;
 import edu.upc.fib.ossim.mcq.model.TestRealise;
-import edu.upc.fib.ossim.mcq.view.PanelAuthentification;
 import edu.upc.fib.ossim.utils.Constants;
 
 
@@ -62,7 +62,7 @@ public class TestRealiseDAOImpl implements TestRealiseDAO {
 			TestRealise mTestRealise = new TestRealise();
 			mTestRealise.setTitreExerice(resultSet.getString("Titre_exo"));
 			mTestRealise.setDatePassageTest(resultSet.getDate("date_testpassing"));
-			mTestRealise.setNote(resultSet.getString("result"));			
+			mTestRealise.setNote(resultSet.getInt("result"));			
 			
 		
 		return mTestRealise;
@@ -96,12 +96,36 @@ public class TestRealiseDAOImpl implements TestRealiseDAO {
 	private TestRealise mapTestRealise2(ResultSet resultSet) throws SQLException {
 		// ResultSet is initially before the first data set
 		TestRealise mTestRealise = new TestRealise();
-		mTestRealise.setNote(resultSet.getString("result"));
+		mTestRealise.setNote(resultSet.getInt("result"));
 		mTestRealise.setDatePassageTest(resultSet.getDate("date_testpassing"));
 		mTestRealise.setTitreExerice(resultSet.getString("Titre_exo"));
 		mTestRealise.setNom(resultSet.getString("nomprenom_etudiant"));
 				
 		return mTestRealise;
+	}
+
+
+	public void insertStudentResultByTest(TestRealise test) {
+		
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        Calendar calendar = Calendar.getInstance();
+	        java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_TEST_REALISE), true, test.getIdEtudiant(),test.getIdTest(),startDate,test.getNote());
+	        int statut = preparedStatement.executeUpdate();
+	        /* Analyse du statut retourné par la requête d'insertion */
+	        if ( statut == 0 ) {
+	            throw new DAOException( "Échec de la création du test realise, aucune ligne ajoutée dans la table." );
+	        }
+	      
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( preparedStatement, connexion );
+	    } 
 	}
 
 

@@ -5,20 +5,14 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Vector;
-import java.util.Hashtable;
 
-
-
-
-
-
-
-import edu.upc.fib.ossim.mcq.model.SimulationProcessus;
+import edu.upc.fib.ossim.mcq.model.ProcessusSimulationProcessus;
 import edu.upc.fib.ossim.utils.ColorCell;
 import edu.upc.fib.ossim.utils.Translation;
 
@@ -733,14 +727,15 @@ public class ContextProcess {
 	 * 
 	 * @see Process#getProcessXMLInfo() 
 	 */
-	public SimulationProcessus getBDDataReady() {
-		SimulationProcessus data = new SimulationProcessus();
+	public List<ProcessusSimulationProcessus> getBDDataReady() {
+		List<ProcessusSimulationProcessus> data = new ArrayList<ProcessusSimulationProcessus>();
 		Iterator<Process> it = readyQueue.iterator();
 		while (it.hasNext()) {			
-			data.getListeProcessus().add(it.next().getProcessBDInfo(true));
+			data.add(it.next().getProcessBDInfo(true));
 		}
 		return data;
 	}
+
 	
 	/**
 	 * Returns process xml information from arriving queue processes 
@@ -764,14 +759,15 @@ public class ContextProcess {
 	 * 
 	 * @see Process#getProcessXMLInfo() 
 	 */
-	public  SimulationProcessus getBDDataArriving() {
-		SimulationProcessus data = new SimulationProcessus();
+	public  List<ProcessusSimulationProcessus> getBDDataArriving() {
+		List<ProcessusSimulationProcessus> data = new ArrayList<ProcessusSimulationProcessus>();
 		Iterator<Process> it = arrivingQueue.iterator();
 		while (it.hasNext()) {
-			data.getListeProcessus().add(it.next().getProcessBDInfo(false));
+			data.add(it.next().getProcessBDInfo(false));
 		}
 		return data;
 	}
+
 	
 	/**************************************************************************************************/
 	/*************************************  Specific Strategies ***************************************/

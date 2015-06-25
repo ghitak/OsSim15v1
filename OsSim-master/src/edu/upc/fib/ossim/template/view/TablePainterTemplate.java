@@ -13,7 +13,6 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.table.TableColumn;
 
 import edu.upc.fib.ossim.template.Presenter;
-import edu.upc.fib.ossim.template.view.PainterTemplate;
 import edu.upc.fib.ossim.utils.AppTableModel;
 import edu.upc.fib.ossim.utils.ColorCell;
 import edu.upc.fib.ossim.utils.ColorRenderer;

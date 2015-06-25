@@ -1,6 +1,8 @@
-
-
 package edu.upc.fib.ossim.dao;
+/**
+ * @author saksaka
+ *
+ */
 
 import static edu.upc.fib.ossim.dao.DAOUtils.fermeturesSilencieuses;
 import static edu.upc.fib.ossim.dao.DAOUtils.initialisationRequetePreparee;
@@ -15,7 +17,6 @@ import java.util.List;
 import edu.upc.fib.ossim.mcq.model.Exercice;
 import edu.upc.fib.ossim.mcq.model.QR;
 import edu.upc.fib.ossim.utils.Constants;
-import edu.upc.fib.ossim.dao.DAOUtils;
 
 public class ExerciceDAOImpl implements ExerciceDAO{
 
@@ -58,7 +59,7 @@ public class ExerciceDAOImpl implements ExerciceDAO{
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = factoryDAO.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_EXERCICE_INFO), true, exo.getTitreExercice(), exo.getTypeExercice(),exo.isActif() );
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_EXERCICE_INFO), true, exo.getTitreExercice(),exo.getTypeExercice(),exo.isActif() );
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {
@@ -136,8 +137,7 @@ public class ExerciceDAOImpl implements ExerciceDAO{
 		 exercice.setIdExercice(resultSet.getInt("Id_exercice"));
 		 exercice.setTitreExercice(resultSet.getString("Titre_exo"));
 
-		 exercice.setTypeExercice(resultSet.getString("exo_type").charAt(0));
-		 System.out.println(exercice.toString());
+		 exercice.setTypeExercice(resultSet.getString("exo_type"));
 		 return exercice;
 	 }
 
@@ -180,12 +180,12 @@ public class ExerciceDAOImpl implements ExerciceDAO{
 	public void creerExercice(Exercice exo) {
 		
 		creerExerciceInfo(exo);
-		QrDAO qrDao=null;
-		for(int i=0;i<exo.getListeQR().size();i++)
-		{
-			qrDao=new QrDAOImpl(factoryDAO);
-			qrDao.creerQR(exo.getListeQR().get(i));
-		}
+//		QrDAO qrDao=null;
+//		for(int i=0;i<exo.getListeQR().size();i++)
+//		{
+//			qrDao=new QrDAOImpl(factoryDAO);
+//			qrDao.creerQR(exo.getListeQR().get(i));
+//		}
 		creerQrExercice(exo);	
 	}
 	

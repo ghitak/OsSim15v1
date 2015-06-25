@@ -1,5 +1,9 @@
 
 package edu.upc.fib.ossim.utils;
+/**
+ * @author saksaka
+ *
+ */
 
 public class Constants {
 	/*
@@ -50,6 +54,7 @@ public class Constants {
 	 */
 	public static final int MODULE_PROCESS=1; 
 	public static final int MODULE_MEMOIRE=2;
+	public static final String REQ_INSERT_TEST_REALISE = "insert.test.realise";
 	
 	
 }

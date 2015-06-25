@@ -21,7 +21,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
 import edu.upc.fib.ossim.AppSession;
+import edu.upc.fib.ossim.dao.FactoryDAO;
 import edu.upc.fib.ossim.mcq.MCQSession;
+import edu.upc.fib.ossim.mcq.model.TestRealise;
 
 public class MCQViewPanel extends JPanel implements ActionListener{
 
@@ -29,6 +31,8 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private JButton saveresults = null;
 
 	private int nbrQuestion = 0;
 	private JLabel question = null;
@@ -47,15 +51,20 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 	private JPanel answerPane = null;
 	private JLabel correctAnswerLabel = null;
 	//ControlGroup
+	private boolean saved=false;
 	private ButtonGroup buttonGroup = null;
+	private FactoryDAO factoryDAO; 
 	public MCQViewPanel(){}
 	public MCQViewPanel(String question, int answerType,int nbrAnswers, List<String> answers,int block,String correct_answer){
 		//this.nbrQuestion = MCQSession.getInstance().getMCQChooserDialog().getQuestionNumber();
 		this.nbrQuestion = MCQSession.getInstance().getMCQDisplayExo().getQuestionNumber();
 		this.correct_answer=correct_answer;
+		MCQSession.getInstance().addCorrectAnswer(nbrQuestion, correct_answer);
+		
 		block_on_step = block;
 		this.question = new JLabel(question);
 		this.answerType = answerType;
+		this.factoryDAO = FactoryDAO.getInstance();
 		if(this.answerType==3){
 			this.nbrAnswers = 1;
 			answer = new JTextArea(5,20);
@@ -157,6 +166,7 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 			}
 		}
 		save.addActionListener(this);
+		save.setEnabled(true);
 		previous = new JButton("previous");
 		// a remettre previous.setEnabled(MCQSession.getInstance().getMCQChooserDialog().hasPrevious());
 		previous.setEnabled(MCQSession.getInstance().getMCQDisplayExo().hasPrevious());
@@ -165,10 +175,45 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 		next = new JButton("next");
 		next.addActionListener(this);
 		// a remettre next.setEnabled(MCQSession.getInstance().getMCQChooserDialog().hasNext());
+		saveresults = new JButton("save results");
+		saveresults.setVisible(false);
 		next.setEnabled(MCQSession.getInstance().getMCQDisplayExo().hasNext());
+		
+		
+		if(MCQSession.getInstance().getMCQDisplayExo().getTypeExo().equals("test") && !MCQSession.getInstance().isSaved()){
+			saveresults.setVisible(!MCQSession.getInstance().getMCQDisplayExo().hasNext());
+			save.setEnabled(false);
+		}
+		saveresults.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				saveresults.setEnabled(false);
+				save.setEnabled(true);
+				MCQSession.getInstance().setSaved(true);
+				saveAnswer();
+				
+				System.out.println(MCQSession.getInstance().getAnswer(1));
+				System.out.println(MCQSession.getInstance().getCorrectAnswer(1));
+				for(int i=1;i<=MCQSession.getInstance().getMCQDisplayExo().getListQR().size();i++){
+					if(MCQSession.getInstance().getAnswer(i).equals(MCQSession.getInstance().getCorrectAnswer(i))){
+						System.out.println("c'est ok");
+						MCQSession.getInstance().setResult(MCQSession.getInstance().getResult()+1);
+						System.out.println(MCQSession.getInstance().getResult());
+					}else{
+						System.out.println(" ko");
+						System.out.println(MCQSession.getInstance().getResult());
+					}
+				}
+				TestRealise test = new TestRealise(PanelAuthentification.mEtudiant,MCQSession.getInstance().getMCQDisplayExo().getIdTest(),MCQSession.getInstance().getResult());
+				System.out.println("idetudiant : "+PanelAuthentification.mEtudiant +"test "+MCQSession.getInstance().getMCQDisplayExo().getIdTest());
+				factoryDAO.getTestRealiseDAO().insertStudentResultByTest(test);
+			}
+		});
+		
 		controlPanel.add(previous);
 		controlPanel.add(save);
 		controlPanel.add(next);
+		controlPanel.add(saveresults);
 		this.add(controlPanel);
 		this.setBorder(BorderFactory.createBevelBorder(1));
 	}
@@ -265,14 +310,18 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 					answerString+="true";
 				else
 					answerString+="false";
-				if(it < radioGroup.size()-1)
+				//if(it < radioGroup.size()-1)
 					answerString+=",";		
 			}
+						
 			MCQSession.getInstance().addAnswer(nbrQuestion, answerString);
+			
 			break;
 		case 3:
 			MCQSession.getInstance().addAnswer(nbrQuestion, answer.getText());
 			break;
 		}
 	}
+	
+	
 }

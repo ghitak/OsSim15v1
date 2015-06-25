@@ -1,11 +1,13 @@
 package edu.upc.fib.ossim.memory.model;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import edu.upc.fib.ossim.mcq.model.ProcessusSimulationMemoire;
 import edu.upc.fib.ossim.utils.SoSimException;
 import edu.upc.fib.ossim.utils.Translation;
 
@@ -618,6 +620,14 @@ public class ContextMemory {
 		Iterator<ProcessMemUnit> it = processQueue.iterator();
 		while (it.hasNext()) {
 			data.add(it.next().getXMLInfo());
+		}
+		return data;
+	}
+	public List<ProcessusSimulationMemoire> getBDDataPrograms() {
+		List<ProcessusSimulationMemoire> data = new ArrayList<ProcessusSimulationMemoire>();
+		Iterator<ProcessMemUnit> it = processQueue.iterator();
+		while (it.hasNext()) {
+			data.add(it.next().getBDInfo());
 		}
 		return data;
 	}

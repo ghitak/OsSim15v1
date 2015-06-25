@@ -1,6 +1,11 @@
 package edu.upc.fib.ossim.memory.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
+
+import edu.upc.fib.ossim.mcq.model.Bid;
+import edu.upc.fib.ossim.mcq.model.ProcessusSimulationMemoire;
 
 /**
  * Process component, instance implementations are cloneable to clone them. 
@@ -145,6 +150,19 @@ public abstract class ProcessComponent implements ProcessMemUnit, Cloneable {
 		data.add(attribute);
 
 		return data;
+	}
+	
+	public ProcessusSimulationMemoire getBDInfo() {
+		ProcessusSimulationMemoire p=new ProcessusSimulationMemoire();
+		List<Bid> bids=new ArrayList<Bid>();
+		Bid data=new Bid();
+
+		data.setNum_Bid(bid);
+		data.setSize_Bid(size);
+		data.setLoad(load);
+		bids.add(data);
+		p.setListBid(bids);
+		return p;
 	}
 
 	/**

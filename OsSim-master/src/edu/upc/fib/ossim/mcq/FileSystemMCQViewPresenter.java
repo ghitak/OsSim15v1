@@ -6,7 +6,6 @@ import java.util.Vector;
 import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.filesystem.FileSystemPresenter;
 import edu.upc.fib.ossim.mcq.view.PanelMCQViewFileSystem;
-import edu.upc.fib.ossim.mcq.view.PanelMCQViewProcess;
 import edu.upc.fib.ossim.template.view.PanelTemplate;
 import edu.upc.fib.ossim.utils.Functions;
 import edu.upc.fib.ossim.utils.SoSimException;

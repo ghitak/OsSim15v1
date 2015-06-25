@@ -8,7 +8,6 @@ import java.util.Vector;
 import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.mcq.model.Answer;
 import edu.upc.fib.ossim.mcq.model.QR;
-import edu.upc.fib.ossim.mcq.view.MCQViewPanel;
 import edu.upc.fib.ossim.mcq.view.PanelMCQViewProcess;
 import edu.upc.fib.ossim.process.ProcessPresenter;
 import edu.upc.fib.ossim.template.view.PanelTemplate;

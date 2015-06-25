@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import edu.upc.fib.ossim.mcq.model.Bid;
+import edu.upc.fib.ossim.mcq.model.ProcessusSimulationMemoire;
 import edu.upc.fib.ossim.utils.ColorCell;
 import edu.upc.fib.ossim.utils.SoSimException;
 import edu.upc.fib.ossim.utils.StringToMap;
@@ -334,7 +336,33 @@ public class ProcessComplete implements ProcessMemUnit, Cloneable {
 
 		return data;
 	}
+	
+	
+	public ProcessusSimulationMemoire getBDInfo() {
+		
+		ProcessusSimulationMemoire data=new ProcessusSimulationMemoire();
+		data.setPid(pid);
+		data.setName(name);
+		data.setSize(size);
+		data.setDuration(duration);
+		data.setColor(color.getRGB());
+		data.setQuantumOrders(quantumOrders);
+		data.setQuantum((Integer)quantum);
+		
+		List<Bid> bids=new ArrayList<Bid>();
+		
+		// Components information if exists
+		Iterator<ProcessComponent> it = blocks.iterator();
+		while (it.hasNext()) {
+			Bid bid=it.next().getBDInfo().getListBid().get(0);
+			bid.setPid(pid);
+			bids.add(bid);
+		}
+		data.setListBid(bids);
 
+		return data;
+	}
+	
 	/**
 	 * Clones this process
 	 * 

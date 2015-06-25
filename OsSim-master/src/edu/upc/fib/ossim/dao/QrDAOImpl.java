@@ -1,4 +1,8 @@
 package edu.upc.fib.ossim.dao;
+/**
+ * @author saksaka
+ *
+ */
 
 import static edu.upc.fib.ossim.dao.DAOUtils.fermeturesSilencieuses;
 import static edu.upc.fib.ossim.dao.DAOUtils.initialisationRequetePreparee;
@@ -185,7 +189,7 @@ public class QrDAOImpl implements QrDAO {
 		s.setManagement(resultSet.getString("management"));
 		s.setMemorySize(resultSet.getInt("MemorySize"));
 		s.setPageSize(resultSet.getInt("pagesize"));
-		s.setPolicy(resultSet.getInt("policy"));
+		s.setPolicy(resultSet.getString("policy"));
 		s.setSoSize(resultSet.getInt("sosize"));
 		return s;
 	}
@@ -205,10 +209,10 @@ public class QrDAOImpl implements QrDAO {
 	    	simulation=getParamQRMem(idQR);
 	    	
 	    	List<ProcessusSimulationMemoire> listProcessMemoire=getProcQRMem(idQR);
-	    	if(qr.getSimulation().getManagement()=="PAG"){
+	    	if(simulation.getManagement().equals("PAG")){
 	    		List<Bid> bids=null;
 	    		for(int i=0; i<listProcessMemoire.size();i++){
-	    			bids=getBidByProc(listProcessMemoire.get(i).getPid());
+	    			bids=getBidByProc(listProcessMemoire.get(i).getPid(),idQR);
 	    			listProcessMemoire.get(i).setListBid(bids);
 	    		}	
 	    	}
@@ -288,7 +292,7 @@ public class QrDAOImpl implements QrDAO {
 		return qr;
 	}
 
-	public void creerReponseQr(List<Answer> listAns) {
+	public void creerReponseQr(List<Answer> listAns, int idQr) {
 		Connection connexion = null;
 	    PreparedStatement ps = null;
 	    ResultSet resultSet = null;
@@ -300,9 +304,9 @@ public class QrDAOImpl implements QrDAO {
 	        int count = 0;
 	         
 	        for (Answer answer: listAns) {
-	         
-	            ps.setString(1, answer.getText());
-	            ps.setBoolean(2, answer.isValue());
+	        	ps.setInt(1, idQr);
+	            ps.setString(2, answer.getText());
+	            ps.setBoolean(3, answer.isValue());
 	            ps.addBatch();
 	             
 	            if(++count % batchSize == 0) {
@@ -324,13 +328,13 @@ public class QrDAOImpl implements QrDAO {
 	}
 
 
-	public void creerParamQrProcessus(SimulationProcessus simp) {
+	public void creerParamQrProcessus(SimulationProcessus simp, int idQr) {
 		Connection connexion = null;
 	    PreparedStatement preparedStatement = null;
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = factoryDAO.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_SIMULATION_PROCESS_PARAM), true, simp.getIdQR(),simp.isMultiprograming(),simp.isPreemptive(),simp.getQuantum(),simp.isVar(),simp.getVerrou(),simp.getManagement());
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_SIMULATION_PROCESS_PARAM), true, idQr,simp.isMultiprograming(),simp.isPreemptive(),simp.getQuantum(),simp.isVar(),simp.getVerrou(),simp.getManagement());
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {
@@ -346,13 +350,13 @@ public class QrDAOImpl implements QrDAO {
 	}
 
 
-	public void creerParamQrMemoire(SimulationMemoire simm) {
+	public void creerParamQrMemoire(SimulationMemoire simm, int idQr) {
 		Connection connexion = null;
 	    PreparedStatement preparedStatement = null;
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = factoryDAO.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_SIMULATION_MEMORY_PARAM), true, simm.getIdQR(),simm.getManagement(),simm.getPageSize(),simm.getMemorySize(),simm.getSoSize(),simm.getPolicy());
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_SIMULATION_MEMORY_PARAM), true, idQr,simm.getManagement(),simm.getPageSize(),simm.getMemorySize(),simm.getSoSize(),simm.getPolicy());
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {
@@ -368,7 +372,7 @@ public class QrDAOImpl implements QrDAO {
 
 
 	public void creerProcessusQr(
-			List<ProcessusSimulationProcessus> listroA) {
+			List<ProcessusSimulationProcessus> listroA, int idQr) {
 		Connection connexion = null;
 	    PreparedStatement ps = null;
 	    ResultSet resultSet = null;
@@ -381,7 +385,7 @@ public class QrDAOImpl implements QrDAO {
 	         
 	        for (ProcessusSimulationProcessus pro: listroA) {
 	         
-	        	ps.setInt(1, pro.getIdQR());
+	        	ps.setInt(1, idQr);
 	        	ps.setInt(2, pro.getPid());
 	        	ps.setString(3,pro.getName());
 	        	ps.setInt(4,pro.getPrio());
@@ -413,7 +417,7 @@ public class QrDAOImpl implements QrDAO {
 	}
 
 
-	public void creerMemoireProcessusQr(List<ProcessusSimulationMemoire> listpro) {
+	public void creerMemoireProcessusQr(List<ProcessusSimulationMemoire> listpro, int idQr) {
 		Connection connexion = null;
 	    PreparedStatement ps = null;
 	    ResultSet resultSet = null;
@@ -426,7 +430,7 @@ public class QrDAOImpl implements QrDAO {
 	         
 	        for (ProcessusSimulationMemoire pro: listpro) {
 	         
-	        	ps.setInt(1, pro.getIdQR());
+	        	ps.setInt(1, idQr);
 	        	ps.setInt(2, pro.getPid());
 	        	ps.setString(3,pro.getName());
 	        	ps.setInt(4,pro.getSize());
@@ -456,7 +460,7 @@ public class QrDAOImpl implements QrDAO {
 	}
 
 
-	public void creerBidMemoire(List<Bid> bids) {
+	public void creerBidMemoire(List<Bid> bids, int idQr) {
 		Connection connexion = null;
 	    PreparedStatement ps = null;
 	    ResultSet resultSet = null;
@@ -469,7 +473,7 @@ public class QrDAOImpl implements QrDAO {
 	         
 	        for (Bid bid: bids) {
 	         
-	        	ps.setInt(1, bid.getIdQR());
+	        	ps.setInt(1, idQr);
 	        	ps.setInt(2, bid.getPid());
 	            ps.setInt(3, bid.getNum_Bid());
 	            ps.setInt(4, bid.getSize_Bid());
@@ -494,7 +498,7 @@ public class QrDAOImpl implements QrDAO {
 		
 	}
 
-	public List<Bid> getBidByProc(int id_Proc) {
+	public List<Bid> getBidByProc(int id_Proc, int id_qr) {
 		Connection connexion = null;
 	    PreparedStatement preparedStatement = null;
 	    ResultSet resultSet = null;
@@ -502,7 +506,7 @@ public class QrDAOImpl implements QrDAO {
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = factoryDAO.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_BID_BY_PID), false,id_Proc);
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_BID_BY_PID), false,id_Proc, id_qr);
 	        resultSet = preparedStatement.executeQuery();
 	        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
 	        if ( resultSet.next() ) {
@@ -572,7 +576,8 @@ public class QrDAOImpl implements QrDAO {
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = factoryDAO.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_INFO_QR), true, q.getModuleQR(),q.getBlockOnStep(),q.getEnonce(),q.isIncludeAnswers(),q.getDifficulty(),q.getAnswerType() );
+	        System.out.println("titre "+q.getTitleQr());
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_INFO_QR), true,q.getTitleQr(), q.getModuleQR(),q.getBlockOnStep(),q.getEnonce(),q.isIncludeAnswers(),q.getDifficulty(),q.getAnswerType() );
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {
@@ -598,29 +603,30 @@ public class QrDAOImpl implements QrDAO {
 
 	public void creerQR(QR q) {
 				    
-		    creerQRInfo(q);
-		    creerReponseQr(q.getAnswerList());
-		    
-		    if(q.getModuleQR()==Constants.MODULE_MEMOIRE){
-		    	SimulationMemoire simm = (SimulationMemoire)q.getSimulation();
-		    	creerParamQrMemoire(simm);
-		    	creerMemoireProcessusQr(simm.getListeProcessus());
-		    	
-		    	if(q.getSimulation().getManagement()=="PAG"){
-		    		
-		    		for(int i=0; i<simm.getListeProcessus().size();i++){
-		    			List<Bid> bids = simm.getListeProcessus().get(i).getListBid();
-		    			if (bids != null) 	creerBidMemoire(bids);
-		    			
-		    		}	
-		    	}
-		    	
-		    }else if(q.getModuleQR()==Constants.MODULE_PROCESS){
-		    	SimulationProcessus simulation=(SimulationProcessus) q.getSimulation();
-		    	creerParamQrProcessus(simulation);
-		    	creerProcessusQr(simulation.getListeProcessus());
-		    	
-		    }
+		creerQRInfo(q);
+	    creerReponseQr(q.getAnswerList(),q.getIdQR());
+	    
+	    if(q.getModuleQR()==Constants.MODULE_MEMOIRE){
+	    	SimulationMemoire simm = (SimulationMemoire)q.getSimulation();
+	    	creerParamQrMemoire(simm, q.getIdQR());
+	    	creerMemoireProcessusQr(simm.getListeProcessus(), q.getIdQR());
+	    	
+	    	if(q.getSimulation().getManagement()=="PAG"){
+	    		
+	    		for(int i=0; i<simm.getListeProcessus().size();i++){
+	    			List<Bid> bids = simm.getListeProcessus().get(i).getListBid();
+	    			if (bids != null) 	creerBidMemoire(bids, q.getIdQR());
+	    			
+	    		}	
+	    	}
+	    	
+	    }else if(q.getModuleQR()==Constants.MODULE_PROCESS){
+	    	SimulationProcessus simulation=(SimulationProcessus) q.getSimulation();
+	    	creerParamQrProcessus(simulation, q.getIdQR());
+	    	creerProcessusQr(simulation.getListeProcessus(), q.getIdQR()); 	
+	    }
+	    
+
 
 	}
 

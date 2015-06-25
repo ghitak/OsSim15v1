@@ -1,8 +1,11 @@
 package edu.upc.fib.ossim.mcq;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
+import edu.upc.fib.ossim.mcq.model.Answer;
+import edu.upc.fib.ossim.mcq.model.QR;
 import edu.upc.fib.ossim.mcq.view.PanelMCQCreatorMemory;
 import edu.upc.fib.ossim.memory.MemoryPresenter;
 import edu.upc.fib.ossim.template.view.PanelTemplate;
@@ -42,6 +45,15 @@ public class MemoryMCQCreatorPresenter extends MemoryPresenter{
 		return data;
 	}
 	@Override
+	public QR getBDData(QR qr) throws SoSimException{
+		
+		super.getBDData(qr);
+		qr.setModuleQR(2);
+		
+		qr = MCQSession.getInstance().getmcqCreationPanel().getBDData(qr);		
+		return qr;
+	}
+	@Override
 	public void putXMLData(int child, Vector<Vector<Vector<String>>> data) throws SoSimException {
 		if(child!=3)
 			super.putXMLData(child, data);
@@ -70,6 +82,42 @@ public class MemoryMCQCreatorPresenter extends MemoryPresenter{
 			}
 			//MCQSession.getInstance().getmcqCreationPanel(answerType, nbrAnswers);
 			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers, blockOnAnswer,difficulty);
+		}
+	}
+	
+	
+	@Override
+	public void putBDData(QR qr) throws SoSimException {
+		try {
+			super.putBDData(qr);
+			int blockOnStep = qr.getBlockOnStep();
+			int nbrAnswers = qr.getAnswerNumber();
+			boolean includeAnswers = qr.isIncludeAnswers();
+			String question = qr.getEnonce();
+			ArrayList<String> answers = new ArrayList<String>();
+			List<Answer> listAnswers=qr.getAnswerList();
+			int answerType =qr.getAnswerNumber();
+			ArrayList<Boolean> answerbool = new ArrayList<Boolean>();
+			int difficulty = qr.getDifficulty();
+			for(int it = 0 ; it < listAnswers.size(); it++){
+				if(answerType!=3){
+					answers.add(listAnswers.get(it).getText());
+					if(includeAnswers){
+						if(listAnswers.get(it).isValue())
+							answerbool.add(new Boolean(true));
+						else
+							answerbool.add(new Boolean(false));
+					}
+				}
+				else{
+					answers.add(String.valueOf(listAnswers.get(it).isValue()));
+				}
+			}
+			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty);
+
+		} catch (Exception e) {
+			System.out.println("pb put data memory creationpanel :"+e.toString());
+
 		}
 	}
 }

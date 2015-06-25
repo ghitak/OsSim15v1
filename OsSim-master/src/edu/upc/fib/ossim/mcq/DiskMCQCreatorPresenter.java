@@ -1,12 +1,9 @@
 package edu.upc.fib.ossim.mcq;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.disk.DiskPresenter;
-import edu.upc.fib.ossim.mcq.view.MCQQuestionLinker;
 import edu.upc.fib.ossim.mcq.view.PanelMCQCreatorDisk;
 import edu.upc.fib.ossim.template.view.PanelTemplate;
 import edu.upc.fib.ossim.utils.Functions;

@@ -2,7 +2,6 @@ package edu.upc.fib.ossim.memory.model;
 
 import java.awt.Color;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;

@@ -1,5 +1,14 @@
 package edu.upc.fib.ossim.dao;
+/**
+ * @author saksaka
+ *
+ */
 
+import static edu.upc.fib.ossim.utils.Constants.FICHIER_PROPERTIES;
+import static edu.upc.fib.ossim.utils.Constants.PROPERTY_DRIVER;
+import static edu.upc.fib.ossim.utils.Constants.PROPERTY_MOT_DE_PASSE;
+import static edu.upc.fib.ossim.utils.Constants.PROPERTY_NOM_UTILISATEUR;
+import static edu.upc.fib.ossim.utils.Constants.PROPERTY_URL;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +16,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import static edu.upc.fib.ossim.utils.Constants.*;
 public class FactoryDAO {
 	
 	

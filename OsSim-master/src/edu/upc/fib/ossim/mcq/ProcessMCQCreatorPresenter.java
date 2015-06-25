@@ -5,12 +5,9 @@ import java.util.List;
 import java.util.Vector;
 
 import edu.upc.fib.ossim.mcq.model.Answer;
-import edu.upc.fib.ossim.mcq.model.ProcessusSimulationProcessus;
 import edu.upc.fib.ossim.mcq.model.QR;
-import edu.upc.fib.ossim.mcq.model.SimulationProcessus;
 import edu.upc.fib.ossim.mcq.view.PanelMCQCreatorProcess;
 import edu.upc.fib.ossim.process.ProcessPresenter;
-import edu.upc.fib.ossim.process.view.ProcessSettings;
 import edu.upc.fib.ossim.template.view.PanelTemplate;
 import edu.upc.fib.ossim.utils.Functions;
 import edu.upc.fib.ossim.utils.SoSimException;
@@ -46,6 +43,15 @@ public class ProcessMCQCreatorPresenter extends ProcessPresenter{
 			data = MCQSession.getInstance().getmcqCreationPanel().getXMLData();
 		}
 		return data;
+	}
+	@Override
+	public QR getBDData(QR qr) {
+		
+		super.getBDData(qr);
+		qr.setModuleQR(1);
+		
+		qr = MCQSession.getInstance().getmcqCreationPanel().getBDData(qr);		
+		return qr;
 	}
 	@Override
 	public void putXMLData(int child, Vector<Vector<Vector<String>>> data) throws SoSimException {
@@ -108,7 +114,7 @@ public class ProcessMCQCreatorPresenter extends ProcessPresenter{
 			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty);
 
 		} catch (Exception e) {
-			System.out.println("pb put data processmcq creationpanel :"+e.toString());
+			System.out.println("processmccreatorpresenter.putdata :"+e.toString());
 
 		}
 	}

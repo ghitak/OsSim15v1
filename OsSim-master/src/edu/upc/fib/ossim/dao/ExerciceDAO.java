@@ -1,4 +1,9 @@
 package edu.upc.fib.ossim.dao;
+/**
+ * @author saksaka
+ *
+ */
+
 
 import java.util.List;
 

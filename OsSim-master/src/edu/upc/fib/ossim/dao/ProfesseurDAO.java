@@ -1,5 +1,8 @@
-
 package edu.upc.fib.ossim.dao;
+/**
+ * @author saksaka
+ *
+ */
 
 public interface ProfesseurDAO {
 	

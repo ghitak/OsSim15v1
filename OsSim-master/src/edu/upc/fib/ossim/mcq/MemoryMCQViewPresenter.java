@@ -2,11 +2,13 @@ package edu.upc.fib.ossim.mcq;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import edu.upc.fib.ossim.AppSession;
+import edu.upc.fib.ossim.mcq.model.Answer;
+import edu.upc.fib.ossim.mcq.model.QR;
 import edu.upc.fib.ossim.mcq.view.PanelMCQViewMemory;
-import edu.upc.fib.ossim.mcq.view.PanelMCQViewProcess;
 import edu.upc.fib.ossim.memory.MemoryPresenter;
 import edu.upc.fib.ossim.template.view.PanelTemplate;
 import edu.upc.fib.ossim.utils.Functions;
@@ -80,6 +82,41 @@ public class MemoryMCQViewPresenter extends MemoryPresenter{
 			//MCQSession.getInstance().getmcqViewPanel(data.get(0).get(1).get(1), Integer.parseInt(data.get(0).get(2).get(1)), nbrAnswers, answers);
 			((PanelMCQViewMemory)panel).addmcqViewPanel(MCQSession.getInstance().getmcqViewPanel(MCQSession.getInstance().getMCQChooserDialog().getQuestionNumber(),data.get(0).get(1).get(1), Integer.parseInt(data.get(0).get(2).get(1)), nbrAnswers, answers,blockOnStep,correct_answers));
 			panel.disableRunning(true);
+		}
+	}
+	
+	@Override
+	public void putBDData(QR qr) throws SoSimException {
+		
+		try {
+			super.putBDData(qr);
+			int blockOnStep = qr.getBlockOnStep();
+			int nbrAnswers = qr.getAnswerNumber();
+			boolean includeAnswers = qr.isIncludeAnswers();
+			ArrayList<String> answers = new ArrayList<String>();
+			String correct_answers = "";
+			List<Answer> listAnswers=qr.getAnswerList();
+			for(int it = 0 ; it < listAnswers.size(); it++){
+				answers.add(listAnswers.get(it).getText());
+				if(includeAnswers){
+					correct_answers+=String.valueOf(listAnswers.get(it).isValue());
+					if(it!=nbrAnswers)
+					 correct_answers+=",";
+				}
+				
+			}
+			if(!includeAnswers)
+				correct_answers=null;    
+			try{
+			((PanelMCQViewMemory)panel).addmcqViewPanel(MCQSession.getInstance().getmcqViewPanel(MCQSession.getInstance().getMCQDisplayExo().getQuestionNumber(),qr.getEnonce(), qr.getAnswerType(), nbrAnswers, answers,blockOnStep,correct_answers));
+			}catch(Exception e) {
+				System.out.println("ya pb ds putdata addmcqViewPanel"+e.toString());
+
+			}
+			panel.disableRunning(true);
+		} catch (Exception e) {
+			System.out.println("ya pb ds putdata Memorymcqviewpresenter"+e.toString());
+
 		}
 	}
 	@Override

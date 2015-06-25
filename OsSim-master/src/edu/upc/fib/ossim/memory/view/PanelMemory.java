@@ -1,15 +1,9 @@
 package edu.upc.fib.ossim.memory.view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.Spring;
 import javax.swing.SpringLayout;
 
 import edu.upc.fib.ossim.memory.MemoryPresenter;

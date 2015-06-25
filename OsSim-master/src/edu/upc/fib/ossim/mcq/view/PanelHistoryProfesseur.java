@@ -4,7 +4,6 @@
 package edu.upc.fib.ossim.mcq.view;
 
 
-import java.awt.Color;
 import java.awt.Frame;
 import java.util.List;
 

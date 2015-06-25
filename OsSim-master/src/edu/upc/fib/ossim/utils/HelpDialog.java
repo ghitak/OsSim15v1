@@ -1,11 +1,10 @@
 package edu.upc.fib.ossim.utils;
 import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.net.URL;
-
-import java.awt.Dialog;
 
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;

@@ -24,7 +24,6 @@ import edu.upc.fib.ossim.AppSession;
 import edu.upc.fib.ossim.mcq.MCQSession;
 import edu.upc.fib.ossim.utils.EscapeDialog;
 import edu.upc.fib.ossim.utils.Functions;
-import edu.upc.fib.ossim.utils.HelpDialog;
 import edu.upc.fib.ossim.utils.SoSimException;
 
 public class MCQChooserDialog extends EscapeDialog implements HyperlinkListener{

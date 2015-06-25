@@ -6,7 +6,7 @@ public class Exercice {
 	
 	private int idExercice;
 	private String titreExercice;
-	private char typeExercice; // test ou entrainement
+	private String typeExercice; // test ou entrainement
 	private boolean actif; // flag vérifiant si l'exercice est activé ou pas
 	private List<QR> listeQR;
 	
@@ -19,7 +19,7 @@ public class Exercice {
 	
 
 
-	public Exercice(String titre_Exercice, char type_Exercice,
+	public Exercice(String titre_Exercice, String type_Exercice,
 			boolean actif, List<QR> liste_QR) {
 		super();
 		this.titreExercice = titre_Exercice;
@@ -59,14 +59,14 @@ public class Exercice {
 
 
 
-	public char getTypeExercice() {
+	public String getTypeExercice() {
 		return typeExercice;
 	}
 
 
 
 
-	public void setTypeExercice(char typeExercice) {
+	public void setTypeExercice(String typeExercice) {
 		this.typeExercice = typeExercice;
 	}
 
