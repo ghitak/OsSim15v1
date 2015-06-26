@@ -487,7 +487,7 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 					}
 					break;
 				case 13:	// Save actual simulation file 
-					if(AppSession.isBD){
+					if(AppSession.isBD){ // save in bd if database is activated
 						
 						saveBD();
 						break;
