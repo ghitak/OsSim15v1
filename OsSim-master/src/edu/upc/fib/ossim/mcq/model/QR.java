@@ -9,16 +9,8 @@ public class QR {
 	private int blockOnStep;
 	private String titleQr;
 	private String enonce;
-	private String qrtitle;
 	
-	public String getQrtitle() {
-		return qrtitle;
-	}
-
-	public void setQrtitle(String qrtitle) {
-		this.qrtitle = qrtitle;
-	}
-
+	
 	private boolean includeAnswers;
 	private int difficulty;
 	private int answerType;

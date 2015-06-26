@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -97,7 +98,7 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 	protected boolean wasrunning; // Pause simulation while popup is shown  
 	protected boolean simulationComplete;  // Simulation complete  
 	protected boolean started; // Simulation started
-
+	
 	protected URL opened = null;
 	private FactoryDAO          daoFactory;
 
@@ -487,6 +488,7 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 					break;
 				case 13:	// Save actual simulation file 
 					if(AppSession.isBD){
+						
 						saveBD();
 						break;
 					}else{
@@ -504,6 +506,7 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 					
 				case 14: // save as
 					if(AppSession.isBD){
+						
 						saveBD();
 					}else{
 						open = new OpenSaveDialog(panel);
@@ -994,7 +997,12 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 		qr = getBDData(qr);
 
 		this.daoFactory = FactoryDAO.getInstance();
-		this.daoFactory.getQrDAO().creerQR(qr);
+		int idQ = this.daoFactory.getQrDAO().creerQR(qr);
+		System.out.println("idQ : "+ idQ);
+		if(AppSession.getInstance().isUpdated()){
+			System.out.println("getListExo() : "+ AppSession.getInstance().getListExo());
+			this.daoFactory.getExerciceDAO().creerQrExercice(AppSession.getInstance().getListExo(),idQ);
+		}
 		JOptionPane d = new JOptionPane();
 		d.showMessageDialog(null,
 				"Question saved in data base",
@@ -1058,6 +1066,8 @@ public abstract class Presenter implements Observer, ChangeListener, ActionListe
 	 * 
 	 */
 	public abstract QR getBDData(QR qr) throws SoSimException;
+
+
 
 
 

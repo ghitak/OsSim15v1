@@ -68,7 +68,7 @@ public class FileSystemMCQCreatorPresenter extends FileSystemPresenter{
 					answers.add(data.get(it).get(2).get(1));
 				}
 			}
-			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty);
+			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty,null);
 		}
 	}
 }

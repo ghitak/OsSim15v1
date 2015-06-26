@@ -48,14 +48,24 @@ public class Constants {
 	public static final String REQ_lIST_REALISE_ETUDIANT_BY_TEST = "list.test.realise.etudiant.by.test";
 	public static final String REQ_INSERT_EXERCICE_INFO = "insert.exercice.info"; 
 	public static final String REQ_INSERT_QR_EXERCICE = "insert.qr.exercice"; 
+	public static final String REQ_DELETE_QR_BID = "delete.bid"; 
+	public static final String REQ_DELETE_QR_ANSWERS = "delete.answers";
+	public static final String REQ_DELETE_QR_PROCESS_PARAM ="delete.proc.info";
+	public static final String REQ_DELETE_QR_PROCESS_PRO ="delete.proc.proc";
+	public static final String REQ_DELETE_QR_MEMORY_PARAM ="delete.mem.info";
+	public static final String REQ_DELETE_QR_MEMORY_PROC ="delete.mem.proc";
+	public static final String REQ_DELETE_QR_INFO = "delete.qr.info";
+	public static final String REQ_INSERT_TEST_REALISE = "insert.test.realise";
+	public static final String REQ_DELETE_QR_EXERCICE = "delete.qr.exo"; 
+	public static final String REQ_LIST_EXO_BY_QR = "get.exo.by.qr";
 	
 	/*
 	 *############ Module QCM #############
 	 */
 	public static final int MODULE_PROCESS=1; 
 	public static final int MODULE_MEMOIRE=2;
-	public static final String REQ_INSERT_TEST_REALISE = "insert.test.realise";
 	
+		
 	
 }
 

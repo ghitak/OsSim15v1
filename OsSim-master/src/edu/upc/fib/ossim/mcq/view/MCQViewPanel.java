@@ -192,20 +192,12 @@ public class MCQViewPanel extends JPanel implements ActionListener{
 				MCQSession.getInstance().setSaved(true);
 				saveAnswer();
 				
-				System.out.println(MCQSession.getInstance().getAnswer(1));
-				System.out.println(MCQSession.getInstance().getCorrectAnswer(1));
 				for(int i=1;i<=MCQSession.getInstance().getMCQDisplayExo().getListQR().size();i++){
 					if(MCQSession.getInstance().getAnswer(i).equals(MCQSession.getInstance().getCorrectAnswer(i))){
-						System.out.println("c'est ok");
 						MCQSession.getInstance().setResult(MCQSession.getInstance().getResult()+1);
-						System.out.println(MCQSession.getInstance().getResult());
-					}else{
-						System.out.println(" ko");
-						System.out.println(MCQSession.getInstance().getResult());
 					}
 				}
 				TestRealise test = new TestRealise(PanelAuthentification.mEtudiant,MCQSession.getInstance().getMCQDisplayExo().getIdTest(),MCQSession.getInstance().getResult());
-				System.out.println("idetudiant : "+PanelAuthentification.mEtudiant +"test "+MCQSession.getInstance().getMCQDisplayExo().getIdTest());
 				factoryDAO.getTestRealiseDAO().insertStudentResultByTest(test);
 			}
 		});

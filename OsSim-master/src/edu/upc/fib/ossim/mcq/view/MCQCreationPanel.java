@@ -107,10 +107,8 @@ public class MCQCreationPanel extends JPanel {
 			public void itemStateChanged(ItemEvent e) {
 				if(sauvegarde.isSelected()){
 					AppSession.isBD=true;
-					System.out.println("yes"+ AppSession.isBD);
 				}else{
 					AppSession.isBD=false;
-					System.out.println("no "+ AppSession.isBD);
 				}
 				
 			}
@@ -338,7 +336,6 @@ public class MCQCreationPanel extends JPanel {
 	
 	public QR getBDData(QR qr) {
 		 		qr.setTitleQr(question_title.getText());
-				System.out.println("getdata "+question_title.getText()+" qr ttt "+qr.getTitleQr());
 				qr.setEnonce(question.getText());
 				qr.setAnswerType(answerType);
 				qr.setBlockOnStep((Integer) block_on_step.getValue());
@@ -449,8 +446,9 @@ public class MCQCreationPanel extends JPanel {
 
 	public void fillData(String question, int answerType, List<String> Answers,
 			List<Boolean> answers, boolean includeAnswers, int Block_On_Step,
-			int difficulty) {
+			int difficulty, String title) {
 		this.question.setText(question);
+		this.question_title.setText(title);
 		nbrAnswers = Answers.size();
 		this.answerType = answerType;
 		if (answerType != 3) {

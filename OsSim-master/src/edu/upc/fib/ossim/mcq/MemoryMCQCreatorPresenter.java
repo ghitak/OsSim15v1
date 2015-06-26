@@ -81,7 +81,7 @@ public class MemoryMCQCreatorPresenter extends MemoryPresenter{
 				}
 			}
 			//MCQSession.getInstance().getmcqCreationPanel(answerType, nbrAnswers);
-			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers, blockOnAnswer,difficulty);
+			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers, blockOnAnswer,difficulty,null);
 		}
 	}
 	
@@ -94,6 +94,7 @@ public class MemoryMCQCreatorPresenter extends MemoryPresenter{
 			int nbrAnswers = qr.getAnswerNumber();
 			boolean includeAnswers = qr.isIncludeAnswers();
 			String question = qr.getEnonce();
+			String title = qr.getTitleQr();
 			ArrayList<String> answers = new ArrayList<String>();
 			List<Answer> listAnswers=qr.getAnswerList();
 			int answerType =qr.getAnswerNumber();
@@ -113,7 +114,7 @@ public class MemoryMCQCreatorPresenter extends MemoryPresenter{
 					answers.add(String.valueOf(listAnswers.get(it).isValue()));
 				}
 			}
-			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty);
+			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty,title);
 
 		} catch (Exception e) {
 			System.out.println("pb put data memory creationpanel :"+e.toString());

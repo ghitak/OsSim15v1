@@ -224,14 +224,8 @@ public class QrDAOImpl implements QrDAO {
 	    	simulation=getParamQRProc(idQR);
 	    	List<ProcessusSimulationProcessus> listProcessArriving=getProcQRProcArriving(idQR);
 	    	List<ProcessusSimulationProcessus> listProcessReady=getProcQRProcReady(idQR);
-	    	System.out.println("size R"+listProcessReady.size()+" size A "+listProcessArriving.size());
 	    	listProcessArriving.addAll(listProcessReady);
-	    	System.out.println("size R"+listProcessReady.size()+" size A "+listProcessArriving.size());
-	    	
-	    	for(int i=0; i<listProcessArriving.size();i++){
-	    		System.out.println(listProcessArriving.get(i).getName());
-	    	}
-	    	System.out.println("managmnt"+simulation.getManagement());
+	    		    	
 	    	simulation.setListeProcessus(listProcessArriving);
 	    	
 	    	
@@ -576,7 +570,6 @@ public class QrDAOImpl implements QrDAO {
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = factoryDAO.getConnection();
-	        System.out.println("titre "+q.getTitleQr());
 	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_INFO_QR), true,q.getTitleQr(), q.getModuleQR(),q.getBlockOnStep(),q.getEnonce(),q.isIncludeAnswers(),q.getDifficulty(),q.getAnswerType() );
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
@@ -601,7 +594,7 @@ public class QrDAOImpl implements QrDAO {
 	}
 
 
-	public void creerQR(QR q) {
+	public int creerQR(QR q) {
 				    
 		creerQRInfo(q);
 	    creerReponseQr(q.getAnswerList(),q.getIdQR());
@@ -626,7 +619,7 @@ public class QrDAOImpl implements QrDAO {
 	    	creerProcessusQr(simulation.getListeProcessus(), q.getIdQR()); 	
 	    }
 	    
-
+	    return q.getIdQR();
 
 	}
 
@@ -681,7 +674,167 @@ public class QrDAOImpl implements QrDAO {
 	    		}
 	    		return listOfQrFromExercice;
 	    	}
-	
+
+
+	public void deleteQR(int idQR, int module) {
+		
+	    deleteAnswersQR(idQR);
+	    if(module==Constants.MODULE_MEMOIRE){
+	    	deleteProcQRMem(idQR);
+	    	deleteParamQRMem(idQR);     	
+	    	deleteBidByProc(idQR);
+	    	
+	    }else if(module==Constants.MODULE_PROCESS){
+	    	deleteProcQRProc(idQR);
+	    	deleteParamQRProc(idQR);	    	
+	    }
+	    deleteQRExercice(idQR);
+	    deleteQRInfo(idQR);
+		
+	}
+
+
+	private void deleteQRInfo(int idQR) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_DELETE_QR_INFO), true, idQR);
+	        int statut = preparedStatement.executeUpdate();
+	       
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( preparedStatement, connexion );
+	    } 
+	}
+
+
+	private void deleteBidByProc(int idQR) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_DELETE_QR_BID), true, idQR);
+	        int statut = preparedStatement.executeUpdate();
+	        
+	       
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( preparedStatement, connexion );
+	    } 
+
+	}
+
+
+	private void deleteProcQRProc(int idQR) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_DELETE_QR_PROCESS_PRO), true, idQR);
+	        int statut = preparedStatement.executeUpdate();
+	       
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( preparedStatement, connexion );
+	    } 
+
+	}
+
+
+	private void deleteParamQRProc(int idQR) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_DELETE_QR_PROCESS_PARAM), true, idQR);
+	        int statut = preparedStatement.executeUpdate();
+	        
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( preparedStatement, connexion );
+	    } 
+
+	}
+
+
+	private void deleteProcQRMem(int idQR) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_DELETE_QR_MEMORY_PROC), true, idQR);
+	        int statut = preparedStatement.executeUpdate();
+	        
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( preparedStatement, connexion );
+	    } 
+
+	}
+
+
+	private void deleteParamQRMem(int idQR) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_DELETE_QR_MEMORY_PARAM), true, idQR);
+	        int statut = preparedStatement.executeUpdate();
+	        
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( preparedStatement, connexion );
+	    } 
+
+	}
+
+
+	private void deleteAnswersQR(int idQR) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_DELETE_QR_ANSWERS), true, idQR);
+	        int statut = preparedStatement.executeUpdate();
+	        
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( preparedStatement, connexion );
+	    } 
+
+	}
+	private void deleteQRExercice(int idQR) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        preparedStatement = initialisationRequetePreparee( connexion, DAOUtils.getProperties().getProperty(Constants.REQ_DELETE_QR_EXERCICE), true, idQR);
+	        int statut = preparedStatement.executeUpdate();
+	        
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( preparedStatement, connexion );
+	    } 
+
+	}
+
 	
 }
 

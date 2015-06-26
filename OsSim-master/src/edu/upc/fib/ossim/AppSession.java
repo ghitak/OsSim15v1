@@ -1,5 +1,6 @@
 package edu.upc.fib.ossim;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Properties;
@@ -28,6 +29,8 @@ public class AppSession {
 	private Properties properties;	// properties
 	public static final int port = 9900; //port used to block the application from having multiple instances
 	private Menu menu;
+	private boolean updated = false;
+	private List<Integer> listExo;
 	
 	public static boolean isBD=false;
 	
@@ -157,5 +160,21 @@ public class AppSession {
 	 */
 	public Menu getMenu(){
 		return menu;
+	}
+	
+	public boolean isUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(boolean updated) {
+		this.updated = updated;
+	}
+
+	public List<Integer> getListExo() {
+		return listExo;
+	}
+
+	public void setListExo(List<Integer> listExo) {
+		this.listExo = listExo;
 	}
 }

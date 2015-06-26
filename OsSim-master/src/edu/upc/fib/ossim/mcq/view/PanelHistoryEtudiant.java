@@ -130,8 +130,6 @@ public class PanelHistoryEtudiant extends EscapeDialog {
 				Object value, boolean isSelected, boolean hasFocus, int row,
 				int column) {
 			
-			System.out.println(value+" "+row+" "+column);
-			
 			if (row==-1 ){
 				l.setFont(new Font("SansSerif",Font.BOLD,13));
 				l.setBackground(Color.GRAY);

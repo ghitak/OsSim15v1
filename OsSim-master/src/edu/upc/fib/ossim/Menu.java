@@ -504,7 +504,6 @@ public class Menu extends JMenuBar implements ActionListener, Observer {
 				//new PanelHistoryEtudiant().setVisible(true);
 				//new PanelHistoryProfesseur().setVisible(true);
 				MCQSession.getInstance().getAuthPanel(Module.mcq).setVisible(true);
-				//System.out.println("tototoooooo");
 				break;
 			case 57:
 

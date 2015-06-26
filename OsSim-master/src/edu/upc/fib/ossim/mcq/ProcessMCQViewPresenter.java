@@ -72,7 +72,6 @@ public class ProcessMCQViewPresenter extends ProcessPresenter{
 			super.putXMLData(child, data);
 		else{
 			int blockOnStep = new Integer (data.get(0).get(3).get(1)).intValue();
-			System.out.println(""+blockOnStep);
 			int nbrAnswers = new Integer(data.get(0).get(4).get(1)).intValue();
 			boolean includeAnswers =  data.get(0).get(5).get(1).equals("true");
 			ArrayList<String> answers = new ArrayList<String>();

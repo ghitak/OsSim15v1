@@ -36,7 +36,8 @@ public interface QrDAO {
 
 	  
 	  QR findQR(int idQR);
-	  void creerQR(QR q);
+	  int creerQR(QR q);
+	  void deleteQR(int idQR, int module);
   
 	  public List<QR> getAllQrFromExercice(int idExercice);
 

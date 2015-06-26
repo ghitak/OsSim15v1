@@ -141,8 +141,6 @@ public class MCQSession {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		System.out.println("File Saved!");	
 	}
 
 	public  void onDisconnect(){	

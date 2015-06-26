@@ -214,4 +214,64 @@ public class ExerciceDAOImpl implements ExerciceDAO{
 	    		}
 	    		return listOfExercice;
 	    	}
+
+	public List<Integer> getListExobyQR(int IdQR) {
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet resultSet = null;
+	    List<Integer> listIdExercice = new ArrayList<Integer>();
+    	// Statements allow to issue SQL queries to the database
+    	try {
+    		
+    		connexion = factoryDAO.getConnection();
+    		preparedStatement = initialisationRequetePreparee( connexion,DAOUtils.getProperties().getProperty(Constants.REQ_LIST_EXO_BY_QR),false,IdQR);
+
+    		resultSet = preparedStatement.executeQuery();
+    		
+    		while (resultSet.next()) {
+    			listIdExercice.add(resultSet.getInt(1));
+    			}
+
+    		} catch ( SQLException e ) {
+    			throw new DAOException( e );
+    		} finally {
+    			fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+    		}
+    		return listIdExercice;
+	}
+
+	public void creerQrExercice(List<Integer> listExo, int idQ) {
+		Connection connexion = null;
+	    PreparedStatement ps = null;
+	    ResultSet resultSet = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = factoryDAO.getConnection();
+	        ps = connexion.prepareStatement(DAOUtils.getProperties().getProperty(Constants.REQ_INSERT_QR_EXERCICE));
+	        final int batchSize = 1000;
+	        int count = 0;
+	         
+	        for (int i = 0; i<listExo.size(); i++) {
+	         
+	        	ps.setInt(1, listExo.get(i));
+	        	ps.setInt(2, idQ);
+	            ps.addBatch();
+	             
+	            if(++count % batchSize == 0) {
+	                ps.executeBatch();
+	            }
+	        }
+	        int[] statut = ps.executeBatch();
+	        /* Analyse du statut retourné par la requête d'insertion */
+	        if ( statut == null ) {
+	            throw new DAOException( "Échec de la création des qrsexo, aucune ligne ajoutée dans la table." );
+	        }
+	        
+	    } catch ( SQLException e ) {
+	        throw new DAOException( e );
+	    } finally {
+	        fermeturesSilencieuses( resultSet, ps, connexion );
+	    }
+		
+	}
 }

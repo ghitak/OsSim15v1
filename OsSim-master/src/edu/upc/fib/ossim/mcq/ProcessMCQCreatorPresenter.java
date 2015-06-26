@@ -61,7 +61,6 @@ public class ProcessMCQCreatorPresenter extends ProcessPresenter{
 			int blockOnStep = new Integer (data.get(0).get(3).get(1)).intValue();
 			int nbrAnswers = new Integer(data.get(0).get(4).get(1)).intValue();
 			boolean includeAnswers = data.get(0).get(5).get(1).equals("true");
-			System.out.println(includeAnswers);
 			String question = data.get(0).get(1).get(1);
 			ArrayList<String> answers = new ArrayList<String>();
 			int answerType = Integer.parseInt(data.get(0).get(2).get(1));
@@ -81,7 +80,7 @@ public class ProcessMCQCreatorPresenter extends ProcessPresenter{
 					answers.add(data.get(it).get(2).get(1));
 				}
 			}
-			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty);
+			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty,null);
 		}
 	}
 	@Override
@@ -92,6 +91,7 @@ public class ProcessMCQCreatorPresenter extends ProcessPresenter{
 			int nbrAnswers = qr.getAnswerNumber();
 			boolean includeAnswers = qr.isIncludeAnswers();
 			String question = qr.getEnonce();
+			String title = qr.getTitleQr();
 			ArrayList<String> answers = new ArrayList<String>();
 			List<Answer> listAnswers=qr.getAnswerList();
 			int answerType =qr.getAnswerNumber();
@@ -111,7 +111,7 @@ public class ProcessMCQCreatorPresenter extends ProcessPresenter{
 					answers.add(String.valueOf(listAnswers.get(it).isValue()));
 				}
 			}
-			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty);
+			MCQSession.getInstance().getmcqCreationPanel().fillData(question,answerType, answers, answerbool,includeAnswers,blockOnStep,difficulty,title);
 
 		} catch (Exception e) {
 			System.out.println("processmccreatorpresenter.putdata :"+e.toString());

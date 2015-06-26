@@ -115,7 +115,7 @@ public class MemoryMCQViewPresenter extends MemoryPresenter{
 			}
 			panel.disableRunning(true);
 		} catch (Exception e) {
-			System.out.println("ya pb ds putdata Memorymcqviewpresenter"+e.toString());
+			System.out.println("pb Memorymcqviewpresenter.putdata "+e.toString());
 
 		}
 	}

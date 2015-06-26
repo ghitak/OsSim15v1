@@ -164,9 +164,7 @@ public void getNext(){
 				listQR = this.factoryDAO.getExerciceDAO().getListQRByExo(idTest);
 				if(listQR != null){
 				this.setMaxQuestions(listQR.size());
-				
-				
-						//	System.out.println("First Load: "+listQR.get(0).getIdQR()+"  "+listQR.get(0).getModuleQR());
+						
 //							loadSimulation((new File(paths.get(0)).toURI().toURL()));
 							loadSimulation(listQR.get(0));
 				}

@@ -87,14 +87,10 @@ public class MCQChooserDialog extends EscapeDialog implements HyperlinkListener{
 					"", JOptionPane.QUESTION_MESSAGE);
 			if (name != null && !name.equals("")){
 				URL url = e.getURL();
-				
-				System.out.println("url="+url);
 				if (url != null) {
 					if (url.toString().endsWith("xml")) {  // Load simulation
 						parseXML(url);
 						try {
-							System.out.println("First Load: "+paths.get(0));
-							System.out.println("link Load: "+(new File(paths.get(0)).toURI().toURL()));
 							//loadSimulation((new File(paths.get(0)).toURI().toURL()));
 							loadSimulation(new URL(paths.get(0)));
 							
@@ -113,7 +109,6 @@ public class MCQChooserDialog extends EscapeDialog implements HyperlinkListener{
 		try {
 			MCQSession.getInstance().destroyMCQViewPanel();
 			questionNumber++;
-			System.out.println("Next:" + paths.get(questionNumber-1));
 			loadSimulation(new URL(paths.get(questionNumber-1)));
 			
 			
@@ -134,7 +129,6 @@ public class MCQChooserDialog extends EscapeDialog implements HyperlinkListener{
 		try {
 			MCQSession.getInstance().destroyMCQViewPanel();
 			questionNumber--;
-			System.out.println("Previous:" + paths.get(questionNumber-1));
 			loadSimulation(new URL(paths.get(questionNumber-1)));
 			
 
@@ -166,9 +160,8 @@ public class MCQChooserDialog extends EscapeDialog implements HyperlinkListener{
 				Element eElement = (Element) nNode;
 				paths.add(eElement.getElementsByTagName("Value").item(0).getTextContent());
 				
-			}	
-			System.out.println("path="+paths);
-		} 
+			}
+			} 
 		catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

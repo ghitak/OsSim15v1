@@ -151,7 +151,6 @@ public class MCQQuestionLinker extends EscapeDialog {
 				myFile = chooser.getSelectedFile();
 				PATH = myFile.getPath();
 				LPATH.setText("Path: " + PATH);
-				System.out.println(PATH);
 				existingTableModel.getDataVector().clear();
 				fillModel();
 				mcqTable.revalidate();
@@ -286,15 +285,16 @@ public class MCQQuestionLinker extends EscapeDialog {
 				return;
 			String s = (String) existingTableModel.getValueAt(
 					existingTable.getSelectedRow(), 0);
-			
-			System.out.println("valeur s : "+s);
 			if(jcbDatabase.isSelected()){
 				QR qr =null;
 			
 				try {
 					qr = (QR) existingBdHashTable.get(s);
-					System.out.println("valeur s : "+qr.getIdQR());
 					qr = FactoryDAO.getInstance().getQrDAO().findQR(qr.getIdQR());
+					AppSession.getInstance().setUpdated(true);
+					AppSession.getInstance().setListExo(FactoryDAO.getInstance().getExerciceDAO().getListExobyQR(qr.getIdQR()));
+					instance.dispose();
+					FactoryDAO.getInstance().getQrDAO().deleteQR(qr.getIdQR(), qr.getModuleQR());
 					Functions.getInstance().openSimulationBD(qr);
 				} catch (SoSimException e1) {
 					// TODO Auto-generated catch block
@@ -612,7 +612,7 @@ public class MCQQuestionLinker extends EscapeDialog {
 			JOptionPane.showMessageDialog(instance, "Save error!", "Failed", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
-		//System.out.println("File Saved!");
+		
 	}
 	
 	private void saveQuestionListBD() {
@@ -661,7 +661,6 @@ public class MCQQuestionLinker extends EscapeDialog {
 	private class ExerciceItemListener implements ItemListener{
 
 		public void itemStateChanged(ItemEvent mItemEvent) {
-			System.out.println(((Exercice)mItemEvent.getItem()).getIdExercice() +" "+mItemEvent.getStateChange()+" "+mItemEvent.SELECTED);
 			int id = ((Exercice)mItemEvent.getItem()).getIdExercice();
 			
 			QrDAO mQrDAO = FactoryDAO.getInstance().getQrDAO();

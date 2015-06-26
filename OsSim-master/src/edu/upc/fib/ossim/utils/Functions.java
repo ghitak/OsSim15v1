@@ -69,7 +69,6 @@ public class Functions {
 		String file = ROOT + helpFile + "_" + AppSession.getInstance().getIdioma().getLanguage() +  ".htm";
 		URL helpURL = getClass().getResource(file);
 		URL url = new URL(helpURL + "#" + reference); // Add reference to scroll
-		System.out.println(url);
 		return url;
 	}
 
